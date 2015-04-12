@@ -1,0 +1,206 @@
+;//M249(US/Version A DX) (v2) with IRON SIGHT weapon spec 
+;//Mesh, Textures and Animation by Jake Cotton aka EAI (Errant AI) (c)2007-2010 All Rights Reserved
+;//errant_ai@yahoo.com
+;//Requires FPSC v118 or later for full function.
+
+;//GUN Model File Requirements
+
+;//GUN Settings
+
+poolammo	= 556BELT
+
+muzzlecolorR	= 252
+muzzlecolorG	= 150
+muzzlecolorB	= 54
+muzzleflash	= 94
+muzzlesize	= 145
+brass		= 4
+smokedecal	= gunsmoke
+smokespeed	= 14
+damage		= 27
+damagetype	= 1
+scorchtype	= 2
+reloadqty		= 200
+accuracy		= 5
+simplezoomacc	= 1
+runacc		= 10
+zoomaccuracy	= 4
+firerate		= 5
+range		= 17000
+
+;//GUN Visuals
+zoomscope	= scope2.dds
+textured		= gun_D.dds
+texturen		= gun_N.dds
+textures		= gun_S.dds
+texturei		= gun_I.dds
+effect		= effectbank\ps_2_0\bumpent.fx
+;//effect		= effectbank\bumpcubereflectilluminate\bumpcubereflectilluminate.fx
+
+transparency	= 0
+weapontype	= 2
+
+;//GUN Sounds
+
+sound1		= fire.wav
+sound2		= retrieve.ogg
+sound3		= dryfire.wav
+sound4		= move.ogg
+sound5		= reloadstart.ogg
+sound6		= reloadend.ogg
+sound7		= melee.wav
+fireloop		= 1700
+
+;HUD muzzleflash position
+horiz		= 0
+vert		= 0
+forward		= 0
+alignx		= 7
+aligny		= -7
+alignz		= 100
+zoomalignx	= 0
+zoomaligny	= -4
+zoomalignz	= 50
+
+;HUD ANIMATION
+keyframe ratio	= 1
+select		= 1,13
+idle		= 23,49
+move		= 50,73
+start fire		= 75,77
+automatic fire	= 78,84
+end fire		= 85,90
+reload		= 91,206
+putaway		= 252,260
+run		= 775,802
+
+useempty	= 1
+empty select	= 1,13
+empty idle	= 23,49
+empty move	= 50,73
+empty start fire	= 75,77
+empty automatic fire= 78,84
+empty end fire	= 85,90
+empty reload	= 91,206
+empty putaway	= 252,260
+empty run	= 775,802
+
+;HUD sound frames list
+soundframes	= 22
+sframe0		= 75,1
+sframe1		= 92,5
+sframe2		= 160,6
+sframe3		= 1,2
+sframe4		= 255,2
+sframe5		= 55,4
+sframe6		= 66,4
+sframe7		= 271,4
+sframe8		= 281,4
+sframe9		= 355,4
+sframe10		= 366,4
+sframe11		= 401,4
+sframe12		= 411,4
+sframe13		= 485,4
+sframe14		= 496,4
+sframe15		= 755,7
+sframe16		= 642,5
+sframe17		= 684,6
+sframe18		= 605,4
+sframe19		= 619,4
+sframe20		= 782,4
+sframe21		= 795,4
+
+;//Mod/118
+noautoreload	= 1
+nofullreload	= 1
+chamberedround	= 0
+forcezoomout	= 1
+addtospare	= 1
+disablemovespeedmod = 0
+disablerunandshoot = 1
+
+bullethidemod	= 1
+bullethidestart	= 13
+bullethidereset	= 150
+bulletlimbtotal	= 13
+
+runx		= 0
+runy		= -1.75
+
+recoily		= 30
+recoilyreturn	= 90
+recoilx		= 15
+recoilxreturn	= 80
+zoomrecoily	= 15
+zoomrecoilyreturn	= 95
+zoomrecoilx	= 5
+zoomrecoilxreturn	= 95
+
+gunlagspeed	= 10
+gunlagxmax	= 16
+gunlagymax	= 3
+
+zoomwalkspeed	= 0.7
+zoomturnspeed	= 0.5
+zoomgunlagspeed	= 7
+zoomgunlagxmax	= 1
+zoomgunlagymax	= 0.3
+
+simplezoom	= 1
+simplezoommod	= 0
+simplezoomx	= 0
+simplezoomy	= 0.015
+simplezoomspeed	= 7
+simplezoomanim	= 1
+simplezoomflash	= 1
+
+;ironsight v1
+zoomto		= 270,275
+zoomfrom	= 280,285
+zoom idle	= 323,323
+;zoom idle	= 323,349
+zoom move	= 349,373
+zoom start fire	= 376,377
+zoom automatic fire = 378,384
+zoom end fire	= 385,390
+
+;ironsight v2
+;zoomto		= 400,405
+;zoomfrom	= 410,415
+;zoom idle	= 443,479
+;zoom idle	= 443,443
+;zoom move	= 480,503
+;zoom start fire	= 506,507
+;zoom automatic fire= 508,514
+;zoom end fire	= 515,520
+
+;3D scope
+;zoomto		=810,815
+;zoomfrom	= 820,825
+;zoom idle	= 827,853
+;zoom move	= 854,877
+;zoom start fire	= 879,881
+;zoom automatic fire= 882,888
+;zoom end fire	= 889,894
+
+;// press [L Alt] to melee
+melee key	= 56
+melee range	= 60
+melee damage	= 5
+melee noscorch 	= 1
+melee start	= 750,758
+melee end	= 759,773
+
+candual		= 1
+candualwithoneweapon = 0
+
+dual_to		= 537,542
+dual_from	= 543,548
+dual_select	= 551,563
+dual_idle		= 573,599
+dual_move	= 600,624
+dual_start fire	= 625,627
+dual_automatic fire	= 628,634
+dual_end fire	= 635,640
+dual_reload	= 641,730
+dual_putaway	= 732,740 

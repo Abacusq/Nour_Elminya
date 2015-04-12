@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--Copyright 2012 The MathWorks, Inc. -->
+<!--Real-Time Toolbox Support Package Repository -->
+<RTTPackageRepository>
+    <ThirdPartyPackage name="Arduino Common" url="http://www.mathworks.com">
+        <Platform name="ALL" version="1.0" filename="rtt_arduinocommon.zip" destdir="arduino" 
+                  installer="" archive="rtt_arduinocommon.zip" 
+                  downloadurl="http://www.mathworks.com/supportfiles" 
+                  installcmd="matlab:realtime.setup.internal.arduino_installer('$(DOWNLOADDIR)', '$(INSTALLDIR)', '$(DESTDIR)')"
+                  removecmd=""
+                  licenseurl="http://www.mathworks.com/matlabcentral/fileexchange/view_license?file_info_id=32374">
+        </Platform>
+    </ThirdPartyPackage>
+    <ThirdPartyPackage name="ARDUINO" url="http://arduino.cc">
+        <Platform name="ALL" version="1" filename="arduino.exe" destdir="arduino-1.0" 
+                  installer="" archive="arduino-1.0-windows.zip" 
+                  downloadurl="http://arduino.googlecode.com/files" 
+                  installcmd="matlab:unzip('$(DOWNLOADDIR)$(FILESEP)$(ARCHIVE)', '$(INSTALLDIR)')" 
+                  removecmd="" 
+                  licenseurl="http://www.arduino.cc/en/Main/FAQ">
+        </Platform>
+    </ThirdPartyPackage>
+</RTTPackageRepository>
+
+

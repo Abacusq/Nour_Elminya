@@ -1,0 +1,178 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Getting Started with Arduino&reg; Uno Hardware</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-03-20"><meta name="DC.source" content="publish_arduinouno_gettingstarted.m"><link rel="stylesheet" type="text/css" href="../../../../../matlab/helptools/private/style.css"></head><body><div class="header"><div class="left"></div><div class="right">&nbsp;</div></div><div class="content"><h1>Getting Started with Arduino&reg; Uno Hardware</h1><!--introduction--><p>This example introduces you to Target for Use with Arduino Uno Hardware and shows you how to run a Simulink&reg; model on Arduino Uno board.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Introduction</a></li><li><a href="#2">Prerequisites</a></li><li><a href="#3">Required Hardware</a></li><li><a href="#4">Task 1 - Connect an LED to an Arduino Output Pin</a></li><li><a href="#5">Task 2 - Review Arduino Block Library</a></li><li><a href="#6">Task 3 - Create a Model for Arduino Uno Hardware</a></li><li><a href="#7">Task 4 - Configure the Model to Run on Arduino Uno Hardware</a></li><li><a href="#8">Task 5 - Run the Model on Arduino Uno Hardware</a></li><li><a href="#9">Other Things to Try</a></li><li><a href="#10">Summary</a></li></ul></div><h2>Introduction<a name="1"></a></h2><p>Target for Use with Arduino Uno Hardware enables you to create and run Simulink models on Arduino Uno board. The target includes a library of Simulink blocks for configuring and accessing Arduino sensors, actuators and communication interfaces.</p><p>In this example you will learn how to create and run a simple Simulink model on Arduino Uno board. See other examples for Arduino Uno board to learn how to implement more complex algorithms.</p><h2>Prerequisites<a name="2"></a></h2><p>If you are new to Simulink, we recommend completing <a href="matlab:helpview('http://www.mathworks.com/academia/student_center/tutorials/slregister.html','-browser')">Interactive Simulink Tutorial</a>, reading the <a href="matlab:helpview(fullfile(docroot,'toolbox','simulink','gs','gs_intropage.html'),'-helpbrowser')">Simulink Getting Started</a> documentation and running <a href="matlab:playbackdemo('sl_env_intro_web','toolbox/simulink/web/demos')">Simulink Getting Started</a> example.</p><h2>Required Hardware<a name="3"></a></h2><p>To run this example you will need the following hardware:</p><div><ul><li>Arduino Uno board</li><li>USB cable</li><li>LED</li><li>220 Ohm resistor</li><li>Breadboard wires</li><li>Small breadboard (recommended)</li></ul></div><img vspace="5" hspace="5" src="publish_arduinouno_gettingstarted_01.png" alt=""> <h2>Task 1 - Connect an LED to an Arduino Output Pin<a name="4"></a></h2><p>In this task, you will connect an LED to an Arduino output pin so you can see changes in the logical state of the pin.</p><p><b>1.</b> Attach one end of the 220 Ohm resistor to output pin 9 on the Arduino Uno board. Use the recommended breadboard and the breadboard wires.</p><p><b>2.</b> Attach the long leg (positive) of the LED to the resistor. Attach the short leg (negative) to the ground pin on the Arduino Uno board.</p><p><img vspace="5" hspace="5" src="arduinouno_gettingstarted_connections1.png" alt=""> </p><h2>Task 2 - Review Arduino Block Library<a name="5"></a></h2><p>Target for Use with Arduino Uno Hardware provides an easy way to create algorithms that use Arduino sensors and actuators by using the blocks that can be added to your Simulink model. The blocks are used to configure the associated sensors and actuators, as well as to read and write data to them.</p><p><b>1.</b> Enter <a href="matlab:simulink">simulink</a> at the MATLAB&reg; prompt. This opens the Simulink Library Browser.</p><p><b>2.</b> In the Simulink Library Browser, navigate to <b>Target for Use with Arduino Hardware</b>.</p><p><b>3.</b> Double-click the <b>Digital Output</b> block. Review the block mask, which contains a description of the block and parameters for configuring the associated Arduino digital output pin.</p><img vspace="5" hspace="5" src="publish_arduinouno_gettingstarted_02.png" alt=""> <h2>Task 3 - Create a Model for Arduino Uno Hardware<a name="6"></a></h2><p>In this task, you will create a simple Simulink model that changes the state of the Arduino digital output pin.</p><p><b>1.</b> In MATLAB, select File &gt; New &gt; Model.</p><p><b>2.</b> Drag the <b>Pulse Generator</b> block from the Simulink <b>Sources</b> library to your model.</p><p><b>3.</b> Double-click the <b>Pulse Generator</b> block. Set the <b>Pulse type</b> to parameter to <b>Sample based</b> and set the <b>Sample time</b> parameter to 0.1 second.</p><p><b>4.</b> Drag the <b>Digital Output</b> block to the model. Use the default block settings.</p><p><b>5.</b> Connect the <b>Pulse Generator</b> block to the <b>Digital Output</b> block.</p><h2>Task 4 - Configure the Model to Run on Arduino Uno Hardware<a name="7"></a></h2><p>In this task, you will configure your model to run on the Arduino Uno board.</p><p><b>1.</b> In your model, select <b>Tools &gt; Run on Target Hardware &gt; Prepare to Run...</b>.</p><p><b>2.</b> Review the parameters in the dialog that opens. Unless already set, set the <b>Target hardware</b> parameter to Arduino Uno. Do not change any other settings.</p><p><b>3.</b> Click <b>OK</b>.</p><p><b>4.</b> Save your model.</p><p>A <a href="matlab:arduinouno_gettingstarted"><tt>pre-configured model</tt></a> is included for your convenience.</p><h2>Task 5 - Run the Model on Arduino Uno Hardware<a name="8"></a></h2><p>In this task, you will run your model on the Arduino Uno board.</p><p><b>1.</b> Connect the Arduino Uno board to your computer with a USB cable.</p><p><b>2.</b> In your Simulink model, select <b>Tools &gt; Run on Target Hardware &gt; Run</b>.</p><p><b>3.</b> Look at the LED attached to pin 9. The LED should blink one time every second.</p><h2>Other Things to Try<a name="9"></a></h2><p>Experiment with other blocks in the Arduino block library. For example:</p><div><ul><li>Create and run a model that turns the LED on if a signal is applied to a digital input pin.</li><li>Create and run a model that repeatedly brightens and dims an LED. Hint: use the PWM block.</li></ul></div><h2>Summary<a name="10"></a></h2><p>This example introduced the workflow for creating an algorithm from a Simulink model and then running it on Arduino Uno board. In this example you learned that:</p><div><ul><li>Target for Use with Arduino Uno Hardware provides blocks for configuring, reading from and writing to Arduino sensors and actuators.</li><li>You can use the options under <b>Tools &gt; Run on Target Hardware</b> menu to prepare, configure and run the model on Arduino Uno board.</li></ul></div><p class="footer">Copyright 2012 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.14<br><br>
+		  MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.
+      </p></div><!--
+##### SOURCE BEGIN #####
+%% Getting Started with Arduino(R) Uno Hardware
+%
+% This example introduces you to Target for Use with Arduino Uno Hardware
+% and shows you how to run a Simulink(R) model on Arduino Uno board.
+ 
+% Copyright 2012 The MathWorks, Inc.
+ 
+
+%% Introduction
+%
+% Target for Use with Arduino Uno Hardware enables you to create and run
+% Simulink models on Arduino Uno board. The target includes a library of
+% Simulink blocks for configuring and accessing Arduino sensors, actuators
+% and communication interfaces.
+% 
+% In this example you will learn how to create and run a simple Simulink
+% model on Arduino Uno board. See other examples for Arduino Uno board to
+% learn how to implement more complex algorithms.
+
+
+%% Prerequisites
+%
+% If you are new to Simulink, we recommend completing 
+% <matlab:helpview('http://www.mathworks.com/academia/student_center/tutorials/slregister.html','-browser') Interactive Simulink Tutorial>, 
+% reading the <matlab:helpview(fullfile(docroot,'toolbox','simulink','gs','gs_intropage.html'),'-helpbrowser') Simulink Getting Started> documentation 
+% and running <matlab:playbackdemo('sl_env_intro_web','toolbox/simulink/web/demos') Simulink Getting Started> example. 
+%
+
+
+%% Required Hardware
+% 
+% To run this example you will need the following hardware:
+% 
+% * Arduino Uno board
+% * USB cable
+% * LED 
+% * 220 Ohm resistor
+% * Breadboard wires
+% * Small breadboard (recommended)
+
+
+open_system('arduinouno_gettingstarted');
+ 
+
+%% Task 1 - Connect an LED to an Arduino Output Pin
+%
+% In this task, you will connect an LED to an Arduino output pin so you can
+% see changes in the logical state of the pin.
+%
+% *1.* Attach one end of the 220 Ohm resistor to output pin 9 on the
+% Arduino Uno board. Use the recommended breadboard and the breadboard
+% wires.
+%
+% *2.* Attach the long leg (positive) of the LED to the resistor. Attach
+% the short leg (negative) to the ground pin on the Arduino Uno board.
+%
+% <<arduinouno_gettingstarted_connections1.png>>
+%
+
+
+%% Task 2 - Review Arduino Block Library
+%
+% Target for Use with Arduino Uno Hardware provides an easy way to create
+% algorithms that use Arduino sensors and actuators by using the blocks
+% that can be added to your Simulink model. The blocks are used to
+% configure the associated sensors and actuators, as well as to read and
+% write data to them.
+%
+% *1.* Enter <matlab:simulink simulink> at the MATLAB(R) prompt. This opens
+% the Simulink Library Browser.
+%
+% *2.* In the Simulink Library Browser, navigate to *Target for Use with
+% Arduino Hardware*.
+%
+% *3.* Double-click the *Digital Output* block. Review the block mask,
+% which contains a description of the block and parameters for configuring
+% the associated Arduino digital output pin.
+
+
+open_system('arduinolib');
+
+
+%% Task 3 - Create a Model for Arduino Uno Hardware
+%
+% In this task, you will create a simple Simulink model that changes the
+% state of the Arduino digital output pin.
+%
+% *1.* In MATLAB, select File > New > Model.
+%
+% *2.* Drag the *Pulse Generator* block from the Simulink *Sources* library
+% to your model. 
+%
+% *3.* Double-click the *Pulse Generator* block. Set the *Pulse type* to
+% parameter to *Sample based* and set the *Sample time* parameter to 0.1
+% second.
+%
+% *4.* Drag the *Digital Output* block to the model. Use the default block
+% settings.
+%
+% *5.* Connect the *Pulse Generator* block to the *Digital Output* block.
+%
+ 
+
+%% Task 4 - Configure the Model to Run on Arduino Uno Hardware
+%
+% In this task, you will configure your model to run on the Arduino Uno
+% board.
+%
+% *1.* In your model, select *Tools > Run on Target Hardware > Prepare to
+% Run...*.
+%
+% *2.* Review the parameters in the dialog that opens. Unless already set,
+% set the *Target hardware* parameter to Arduino Uno. Do not change any
+% other settings.
+%
+% *3.* Click *OK*.
+%
+% *4.* Save your model. 
+% 
+% A <matlab:arduinouno_gettingstarted |pre-configured model|> is included
+% for your convenience.
+
+
+%% Task 5 - Run the Model on Arduino Uno Hardware
+%
+% In this task, you will run your model on the Arduino Uno board.
+%
+% *1.* Connect the Arduino Uno board to your computer with a USB cable.
+%
+% *2.* In your Simulink model, select *Tools > Run on Target Hardware >
+% Run*.
+%
+% *3.* Look at the LED attached to pin 9. The LED should blink one time
+% every second.
+
+%% Other Things to Try
+% 
+% Experiment with other blocks in the Arduino block library. For example:
+%
+% * Create and run a model that turns the LED on if a signal is applied to
+% a digital input pin.
+% * Create and run a model that repeatedly brightens and dims an LED. Hint:
+% use the PWM block.
+%
+
+
+%% Summary
+% 
+% This example introduced the workflow for creating an algorithm from a
+% Simulink model and then running it on Arduino Uno board. In this
+% example you learned that:
+%
+% * Target for Use with Arduino Uno Hardware provides blocks for
+% configuring, reading from and writing to Arduino sensors and actuators.
+% * You can use the options under *Tools > Run on Target Hardware* menu to
+% prepare, configure and run the model on Arduino Uno board.
+
+
+close_system('arduinolib', 0); 
+close_system('arduinouno_gettingstarted', 0); 
+displayEndOfDemoMessage(mfilename) 
+ % LocalWords:  slregister intropage env arduinolib Uno
+
+##### SOURCE END #####
+--></body></html>

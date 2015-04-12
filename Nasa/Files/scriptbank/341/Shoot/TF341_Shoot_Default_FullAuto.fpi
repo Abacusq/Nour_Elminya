@@ -1,0 +1,209 @@
+;//TF-341 Artificial Intelligence Script
+;//Script by Errant AI, Requires FPSC x9 v1.18 Beta 6 or later and character with TF341 animations.
+
+desc          = DarkAI TF341 shoot and melee default full-auto gun (assault rifle or SMG) - Assign to Shoot AI slot must be used with matching Main AI script
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Walking animations shoot
+:isdarkai=1,aicanshoot=1,ducking=0,strafingleft=1:animationnormal,animate=3
+:isdarkai=1,aicanshoot=1,ducking=0,strafingright=1:animationnormal,animate=4
+:isdarkai=1,aicanshoot=1,ducking=0,movingforwards=1:animationnormal,animate=2
+:isdarkai=1,aicanshoot=1,ducking=0,runningforwards=1:animationnormal,animate=5
+:isdarkai=1,aicanshoot=1,ducking=0,movingbackwards=1:animationreverse,animate=32
+:isdarkai=1,aicanshoot=1,ducking=0,idle=1:animationnormal,animate=1
+;//Crouching Animations-shoot
+:isdarkai=1,aicanshoot=1,ducking=1,strafingleft=1:animationnormal,animate=32
+:isdarkai=1,aicanshoot=1,ducking=1,strafingright=1:animationnormal,animate=32
+:isdarkai=1,aicanshoot=1,ducking=1,movingforwards=1:animationnormal,animate=32
+:isdarkai=1,aicanshoot=1,ducking=1,movingbackwards=1:animationreverse,animate=32
+:isdarkai=1,aicanshoot=1,ducking=1,idle=1:animationnormal,animate=31
+;//Walking animations-no shoot
+:isdarkai=1,aicanshoot=0,ducking=0,strafingleft=1:animationnormal,animate=34
+:isdarkai=1,aicanshoot=0,ducking=0,strafingright=1:animationnormal,animate=34
+:isdarkai=1,aicanshoot=0,ducking=0,movingforwards=1:animationnormal,animate=34
+:isdarkai=1,aicanshoot=0,ducking=0,runningforwards=1:animationnormal,animate=40
+:isdarkai=1,aicanshoot=0,ducking=0,movingbackwards=1:animationreverse,animate=34
+:isdarkai=1,aicanshoot=0,ducking=0,idle=1:animationnormal,animate=33
+;//Crouching Animations-no shoot
+:isdarkai=1,aicanshoot=0,ducking=1,strafingleft=1:animationnormal,animate=34
+:isdarkai=1,aicanshoot=0,ducking=1,strafingright=1:animationnormal,animate=34
+:isdarkai=1,aicanshoot=0,ducking=1,movingforwards=1:animationnormal,animate=34
+:isdarkai=1,aicanshoot=0,ducking=1,movingbackwards=1:animationreverse,animate=34
+:isdarkai=1,aicanshoot=0,ducking=1,idle=1:animationnormal,animate=33
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//TARGETING and SHOOTING FULL-AUTO
+:state=1,aihastarget=0:aisettarget
+:state=1:airotatetotarget
+:aiaction=0:aiusefullaim=0
+:aiaction=1:aiusefullaim=1
+:aiaction=2:aiusefullaim=0
+:aiaction=3:aiusefullaim=1
+;//NOTE: to lessen difficulty, increase random and/or add rateoffire condition in the following five lines...
+:state=1,ifweapon=1,aicanshoot=1,idle=1,ducking=0,rateoffire:aistop,setaiactive=0,state=15
+:state=1,ifweapon=1,aicanshoot=1,idle=1,ducking=1,rateoffire:aistop,setaiactive=0,state=35
+:state=1,ifweapon=1,aicanshoot=1,idle=0,rateoffire:useweapon,rundecal=6
+:state=55,ifweapon=1,aicanshoot=1,random=1:useweapon,rundecal=6
+:state=61,ifweapon=1,aicanshoot=1,random=1:useweapon,rundecal=6
+:state=15:setframe=28,state=16
+:state=16:incframe=28
+:state=16,random=1:useweapon,rundecal=6
+:state=16,frameatend=28:setaiactive=1,state=38
+:state=35:setframe=39,state=36
+:state=36:incframe=39
+:state=36,random=1:useweapon,rundecal=6
+:state=36,frameatend=39:setaiactive=1,state=38
+:state=38:state=2,aicallteam=500
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//RELOADING If not in combat, AI can readily reload.
+:state=1,ifweapon=0,aihastarget=1:state=15,etimerstart
+:state=1,ifweapon=0,aihastarget=0:state=25,etimerstart
+;//RELOADING Assess situation-AI must make a tactical decision if needing to reload durring combat:  AI can choose to retreat and reload or charge foreward to melee range.
+:state=15,aitargetdistwithin=60,rateoffire,random=1:state=190
+:state=15,aitargetdistwithin=120,random=1:state=55
+:state=15,aiatcover=0:state=60
+:state=15,aiatcover=1:state=25
+:state=15,etimergreater=500:state=25
+;//RELOADING choose anim
+:state=25,ducking=0:etimerstart,aistop,setaiactive=0,state=26,setframe=6,sound=audiobank\guns\reload.wav
+:state=25,ducking=1:etimerstart,aistop,setaiactive=0,state=27,setframe=36,sound=audiobank\guns\reload.wav
+;//RELOADING anim standing
+:state=26:freeze,aistop,incframe=6
+:state=26,framebeyond=6 60:reloadweapon
+:state=26,etimergreater=1500,frameatend=6:state=28
+;//RELOADING anim crouched
+:state=27:freeze,aistop,incframe=36
+:state=27,framebeyond=36 60:reloadweapon
+:state=27,etimergreater=1500,frameatend=36:state=28
+:state=28:state=2,setaiactive=1
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Respond to any sounds while not in combat
+:state=1,idle=1,aicanshoot=0,aiheardsound=1000:aimovetosound
+:state=1,idle=0,aicanshoot=0,aiheardsound=500:aimovetosound
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Assist allies if called while inactive
+:isdarkai=1,aicalled=2000,aihastarget=0,idle=1:airespondtocall
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Fall back to cover
+:state=60:airotatetotarget,etimerstart,aimovetocover=0,state=61,setvar=SEAY $EAY,addvar=SEAY 180
+:state=61:aisettarget
+:state=61:rotatetotarget
+:state=61:setvar=SEAY $EAY,airotatey=%SEAY
+:state=61,aiatcover=1:state=25
+:state=61,hasweapon=1,ifweapon=0,aitargetdistwithin=60,etimergreater=500,random=20:state=25
+:state=61,hasweapon=1,ifweapon=0,etimergreater=1000,aitargetdistwithin=60,rateoffire:state=190
+:state=61,hasweapon=1,ifweapon=1,etimergreater=1000,aitargetdistwithin=60,rateoffire:state=190
+:state=61,etimergreater=3000:state=25
+;//Get super defensive when low health to avoid DAI taking over and turning AI's back to hostiles
+:state=1,isdarkai=1,healthless=150,idle=0,random=10:state=60
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Randomly close with enemy for melee if seen nearby
+:state=1,aicanshoot=1,aihastarget=1,aitargetdistwithin=200,random=5:aistop,etimerstart,aisettarget,airotatetotarget,state=55,aicallteam=1000
+:state=55:aisettarget,aimovetotarget
+:state=55,aitargetdistfurther=250:state=2
+:state=55,aicanshoot=0:state=2
+:state=55,aihastarget=0:state=2
+:state=55,etimergreater=5000:state=2
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Enemy at very close range
+:state=1,aitargetdistwithin=60,varequal=beenshot 0,rateoffire,etimergreater=1000:state=10
+:state=1,aitargetdistwithin=60,varequal=beenshot 0,random=5:state=60
+:state=55,aitargetdistwithin=60:state=190
+:state=10,rateoffire:airotatetotarget,rotatetotarget,state=190
+:state=10,aitargetdistfurther=80:state=2
+;//Orientate for melee strike
+:state=190:state=191,etimerstart
+:state=191:airotatetotarget,rotatetotarget
+:state=191,aitargetdistwithin=70,aicanshoot=1:state=192,aistop
+:state=191,aitargetdistfurther=70:state=2
+:state=191,aicanshoot=0:state=2
+;//Choose random hand or foot strike with random cahnce to combo
+:state=192,random=5:etimerstart,setaiactive=0,state=293,setframe=23
+:state=192,random=3:etimerstart,state=393,setframe=9
+:state=192:etimerstart,setaiactive=0,state=193,setframe=8
+;//Normal Strike
+:state=193:incframe=8,aistop,airotatetotarget,rotatetotarget,freeze
+:state=193,framebeyond=8 40,aitargetdistwithin=70:state=194,aisetmeleedamage=10,aiusemelee=1,sound=audiobank\misc\melee.wav
+:state=193,frameatend=8:state=195
+:state=194:incframe=8,aistop,airotatetotarget,rotatetotarget,freeze
+:state=194,etimergreater=500,frameatend=8,random=10:state=293,setframe=23
+:state=194,etimergreater=500,frameatend=8:state=195
+;//Uppercut Strike
+:state=393:incframe=9,aistop,airotatetotarget,rotatetotarget,freeze
+:state=393,framebeyond=9 40,aitargetdistwithin=70:state=394,aisetmeleedamage=15,aiusemelee=1,sound=audiobank\misc\melee.wav
+:state=393,frameatend=9:state=195
+:state=394:incframe=9,aistop,airotatetotarget,rotatetotarget,freeze
+:state=394,etimergreater=500,frameatend=9,random=10:state=293,setframe=23
+:state=394,etimergreater=500,frameatend=9:state=195
+;//Kick
+:state=293:incframe=23,aistop,airotatetotarget,rotatetotarget,freeze
+:state=293,framebeyond=23 40,aitargetdistwithin=70:state=294,aisetmeleedamage=10,aiusemelee=1,sound=audiobank\341\melee_kick.wav
+:state=293,frameatend=23:state=195
+:state=294:incframe=23,aistop,airotatetotarget,rotatetotarget,freeze
+:state=294,etimergreater=500,frameatend=9,random=10,state=393,setframe=9
+:state=294,etimergreater=500,frameatend=23:state=195
+;//Melee finished
+:state=195:setaiactive=1,aistop,state=2
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Shot Damage - Flinch (random)  left / right / gut - take cover
+:shotdamage=1,varequal=beenshot 0:setvar=beenshot 1,aicallteam=1500
+:shotdamage=1,varnotequal=beenshot 0:sound=audiobank\eai\melee_i_soft.wav
+;//Left Flinch
+:varequal=beenshot 1,shotdamagetype=1,random=1:setvar=beenshot 2,aistop,setaiactive=0,state=123,setframe=44,sound=audiobank\voices\male\land.wav
+:varequal=beenshot 1,shotdamagetype=3:setvar=beenshot 2,aistop,setaiactive=0,state=121,setframe=45,sound=audiobank\eai\melee_i_soft.wav
+:varequal=beenshot 1,shotdamagetype=2,random=6:setvar=beenshot 2,aistop,setaiactive=0,state=121,setframe=45,sound=audiobank\eai\melee_i_soft.wav
+:state=121:incframe=45,freeze
+:state=121,framebeyond=45 80:state=124
+;//Right Flinch
+:varequal=beenshot 1,shotdamagetype=1:setvar=beenshot 2,aistop,setaiactive=0,state=122,setframe=46,sound=audiobank\eai\melee_i_soft.wav
+:varequal=beenshot 1,shotdamagetype=4:setvar=beenshot 2,aistop,setaiactive=0,state=122,setframe=46,sound=audiobank\eai\melee_i_soft.wav
+:varequal=beenshot 1,shotdamagetype=2,random=5:setvar=beenshot 2,aistop,setaiactive=0,state=122,setframe=46,sound=audiobank\eai\melee_i_soft.wav
+:state=122:incframe=46,freeze
+:state=122,framebeyond=46 80:state=124
+;//Gut Flinch
+:varequal=beenshot 1,shotdamagetype=5:setvar=beenshot 2,aistop,setaiactive=0,state=123,setframe=44,sound=audiobank\voices\male\land.wav
+:varequal=beenshot 1,shotdamagetype=6:setvar=beenshot 2,aistop,setaiactive=0,state=123,setframe=44,sound=audiobank\voices\male\land.wav
+:varequal=beenshot 1,shotdamagetype=2,random=4:setvar=beenshot 2,aistop,setaiactive=0,state=123,setframe=44,sound=audiobank\voices\male\land.wav
+:state=123:incframe=44,freeze
+:state=123,framebeyond=44 80:state=124
+;//Ignore
+:varequal=beenshot 1,shotdamagetype=2:setvar=beenshot 999
+;//Go to cover or panic
+:state=124,hasweapon=1,ifweapon=1,idle=1,random=20:setaiactive=1,state=125
+:state=124,hasweapon=1,ifweapon=1,idle=1,random=5:setaiactive=1,state=60,aisettarget,setvar=beenshot 0
+:state=124,hasweapon=1,ifweapon=1,idle=0,random=10:setaiactive=1,state=60,aisettarget,setvar=beenshot 0
+:state=124,hasweapon=1,ifweapon=0,idle=1,random=2:setaiactive=1,state=60,aisettarget,setvar=beenshot 0
+:state=124,hasweapon=1,ifweapon=0,idle=0,random=5:setaiactive=1,state=60,aisettarget,setvar=beenshot 0
+:state=124,hasweapon=0,random=5:setaiactive=1,state=60,aisettarget,setvar=beenshot 0
+:state=124,hasweapon=0:setaiactive=1,state=125
+;//Cower
+:state=125:setaiactive=0,setframe=131,state=130,etimerstart
+:state=130:incframe=131,freeze
+:state=130,frameatend=131:setframe=132,state=132,setvar=beenshot 3
+:state=132:aicallteam=2000
+:state=132:incframe=132
+:state=132,frameatend=132:setframe=132,state=132
+:state=132,etimergreater=300,random=50:setframe=134,state=133,setvar=beenshot 5
+:state=133:incframe=134,freeze
+:state=133,frameatend=134:setvar=beenshot 999
+:state=134:incframe=133,freeze
+:state=134,frameatend=133:setframe=132,state=132,setvar=beenshot 3
+:varequal=beenshot 999:setaiactive=1,setvar=beenshot 0,state=1
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Stand down after inaction delay
+:state=1,idle=1,aicanshoot=0,etimergreater=8000:state=999
+:state=999:setvar=beenshot 99,state=1000
+:state=1000:aistop,setaiactive=0,setframe=25,state=1001
+:state=1001,healthless=170:addhealth=1
+:state=1001:incframe=25,freeze
+:state=1001,frameatend=25:setaiactive=1,aistop,state=1002
+:state=1002:etimerstart,setvar=beenshot 0,aicleartarget,runfpidefault=1
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Open Doors
+:nearactivatable=0:settarget,activatetarget=2
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Headshot
+::headshot=1,headshotdamage=100
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Start Script
+:state=0:setaiactive=1,alwaysactive=1,aiattackawareness=1,state=2
+:state=2:state=1,etimerstart
+;//End

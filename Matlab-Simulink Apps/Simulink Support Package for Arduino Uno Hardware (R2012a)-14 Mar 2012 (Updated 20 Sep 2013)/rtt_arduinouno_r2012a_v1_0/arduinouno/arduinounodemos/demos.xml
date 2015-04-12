@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--    -->
+<!-- Copyright 2012 The MathWorks, Inc. -->
+<demos>
+   <name>Target for Use with Arduino&#174; Uno Hardware</name>
+   <type>simulink</type>
+   <icon>HelpIcon.DEMOS</icon>
+   <description isCdata="no">
+   <p>Simulink&#174; lets you design and run models on Arduino hardware. With this capability, you can assess and optimize algorithms in the classroom or lab as they execute in real-time on Arduino hardware with physical I/O.</p>
+   </description>
+   <website>
+   <a href="http://www.mathworks.com/pl_simulink">Product page at mathworks.com&#032;</a>
+   <a href="http://www.mathworks.com/pl_simulink"><img src="html/demo_arrow.png" border="none" alt="arrow" align="middle"></img></a>
+   </website>     
+   <demosection>
+   <label>Tutorials</label>
+   <demoitem>
+      <label>Getting Started with Arduino Uno Hardware</label>
+      <type>model</type>
+      <source>publish_arduinouno_gettingstarted</source>
+      <file>html/publish_arduinouno_gettingstarted.html</file>
+   </demoitem>
+   <demoitem>
+      <label>Servo Control</label>
+      <type>model</type>
+      <source>publish_arduinouno_servocontrol</source>
+      <file>html/publish_arduinouno_servocontrol.html</file>
+   </demoitem>   
+   </demosection>
+   <demosection>
+    <label>Examples</label>
+    <demoitem>
+      <label>Drive with PID Control</label>
+      <type>model</type>
+      <source>publish_arduinouno_pid</source>
+      <file>html/publish_arduinouno_pid.html</file>
+    </demoitem>
+   </demosection>
+</demos>
+
+<!-- LocalWords:  gettingstarted servocontrol Uno arduinouno
+-->

@@ -1,0 +1,258 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Drive with PID Control</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-03-20"><meta name="DC.source" content="publish_arduinouno_pid.m"><link rel="stylesheet" type="text/css" href="../../../../../matlab/helptools/private/style.css"></head><body><div class="header"><div class="left"></div><div class="right">&nbsp;</div></div><div class="content"><h1>Drive with PID Control</h1><!--introduction--><p>This example shows how to simulate a simple closed-loop control algorithm in Simulink&reg; and how to run it on an Arduino&reg; Uno board.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Introduction</a></li><li><a href="#2">Prerequisites</a></li><li><a href="#3">Required Hardware</a></li><li><a href="#4">Task 1 - Build the Vehicle</a></li><li><a href="#5">Task 2 - Build the Motor Controller</a></li><li><a href="#6">Task 3 - Simulate Open-Loop Control Model</a></li><li><a href="#10">Task 4 - Run Open-Loop Control Model on the Arduino Uno Board</a></li><li><a href="#11">Task 5 - Simulate Closed-Loop Control Model</a></li><li><a href="#15">Task 6 - Run Closed-Loop Control Model on the Arduino Uno Board</a></li><li><a href="#16">Other Things to Try</a></li><li><a href="#17">Summary</a></li></ul></div><h2>Introduction<a name="1"></a></h2><p>In a vehicle using independent wheel control, applying the same power to each wheel generally does not result in the vehicle moving straight. This is caused by mechanical and surface differences experienced by each of the wheels. To reduce deviation in the vehicle heading, a better approach is to use a closed-loop controller which adjusts the power applied to two motors based on the difference in their rates of rotation. One such controller is a well-known proportional&#8211;integral&#8211;derivative (PID) controller.</p><p>PID control is a basic control loop feedback mechanism. The controller minimizes the difference between the measured and the desired value of a chosen system variable by adjusting the system control inputs.</p><p>This example shows you how to simulate the controller using a simple plant model, first with no feedback control (Open-Loop Control), and then with feedback control (Closed-Loop Control). This example also illustrates how to switch between simulating the PID controller and running it on hardware in the same model.</p><h2>Prerequisites<a name="2"></a></h2><p>We recommend completing <a href="matlab:helpview(fullfile(realtime.internal.getArduinoUnoTargetRoot,'arduinounodemos','html','publish_arduinouno_gettingstarted.html'),'-helpbrowser')">Getting Started with Arduino Uno Hardware</a>.</p><h2>Required Hardware<a name="3"></a></h2><p>To run this example you will need the following hardware:</p><p>Controller board:</p><div><ul><li>Arduino Uno board</li><li>USB cable</li></ul></div><p>Motor controller parts:</p><div><ul><li>Texas Instruments&#8482; SN754410 quadruple high-current half-H driver</li><li>Two 10 kOhm resistors</li><li>Small breadboard</li><li>Breadboard wires</li></ul></div><p>A four-wheel vehicle:</p><div><ul><li>A mobile platform with four wheels powered by four DC motors</li><li>Two optical encoders wired to front DC motors</li><li>A battery pack consisting of five AA 1.5V batteries</li><li>A single pole, single throw (SPST) switch</li></ul></div><p>Notes:</p><div><ul><li>This example was tested with the four-wheel vehicle built using DFRobot 4WD Arduino-Compatible Platform w/Encoders.</li><li>Other vehicle kits can be used as long as they have the same mechanical characteristics (four wheels, four DC motors and two encoders).</li><li>With a minor modification to the controller connections, a vehicle with only two DC motors can be used as well.</li><li>Encoders used in this example are ten-step encoders. Different encoders can be used with minor modifications to the example models.</li></ul></div><img vspace="5" hspace="5" src="publish_arduinouno_pid_01.png" alt=""> <h2>Task 1 - Build the Vehicle<a name="4"></a></h2><p><b>1.</b> Assemble the mobile platform. Attach the two DC motors with encoders to the front wheels.</p><p><b>2.</b> Attach the other two DC motors to the rear wheels. If your platform has only two DC motors, let the rear wheels rotate freely.</p><p><b>3.</b> Assemble the battery pack and attach it to the mobile platform using suitable fasteners.</p><p><b>4.</b> Connect the positive end of the battery pack to the switch using the breadboard wires.</p><p>Note: If you are using DFRobot 4WD Arduino-Compatible Platform w/Encoders kit, follow the vendor's instructions.</p><h2>Task 2 - Build the Motor Controller<a name="5"></a></h2><p>The Arduino Uno board alone cannot provide high enough current to power DC motors. For that purpose, you will build the motor controller based on the Texas Instruments SN754410 quadruple high-current half-H driver.</p><p><b>1.</b> Assemble the motor controller using the following circuit diagram.</p><p><img vspace="5" hspace="5" src="arduinouno_pid.png" alt=""> </p><p><b>2.</b> Connect the controller to the vehicle battery pack following the same circuit diagram.</p><h2>Task 3 - Simulate Open-Loop Control Model<a name="6"></a></h2><p>This step illustrates that independently powered wheels cause deviations in vehicle heading.</p><p><b>1.</b> Open the <a href="matlab:arduinouno_drive_openloop">model</a>. Observe two subsystems in the model.</p><p><b>2.</b> Open the <b>Open-Loop Controller</b> subsystem. This subsystem controls the vehicle driving. Observe that the controller does not use the difference between two encoder outputs to control the motors.</p><p><b>3.</b> Notice the <b>Motors</b> subsystem. The subsystem contains both simulated and actual motors. The Environment Controller block takes the outputs of the simulated or actual motors, depending on the current environment. This allows you to represent both simulated and actual motors in one model. As an alternative, you may create two models, one for simulation, and the other one for running on actual hardware.</p><p><b>4.</b> Click <b>Start simulation</b> in the Simulink toolbar. Click the <b>Scope</b> block and observe that the <b>Encoder Output Mismatch</b> increases over time. This indicates that the vehicle will not move straight.</p><img vspace="5" hspace="5" src="publish_arduinouno_pid_02.png" alt=""> <img vspace="5" hspace="5" src="publish_arduinouno_pid_03.png" alt=""> <h2>Task 4 - Run Open-Loop Control Model on the Arduino Uno Board<a name="10"></a></h2><p><b>1.</b> Disconnect the battery power wire leading to the Vin terminal on the Arduino Uno board since the board will get powered via a USB cable.</p><p><b>2.</b> Connect the Arduino Uno board to your host computer using USB cable.</p><p><b>3.</b> Select <b>Tools &gt; Run on Target Hardware &gt; Run</b> to download the example model.</p><p><b>4.</b> After the model is downloaded, disconnect the USB cable from your Arduino Uno board.</p><p><b>5.</b> Connect back the battery power wire leading to the Vin terminal on your Arduino Uno board.</p><p><b>6.</b> Place the vehicle on the ground and turn the vehicle switch on. The model runs on the board and the vehicle starts moving.</p><p><b>7.</b> Notice that the path of the vehicle is not straight, as predicted by the simulation.</p><p><b>8.</b> Turn the vehicle switch off.</p><h2>Task 5 - Simulate Closed-Loop Control Model<a name="11"></a></h2><p><b>1.</b> Open the <a href="matlab:arduinouno_drive_closedloop">model</a>. Observe two subsystems in the model.</p><p><b>2.</b> Double-click <b>PID Controller</b> subsystem. Notice that the proportional (P) control is used to synchronize two motors when the vehicle runs straight. Also, notice that during a turn, no synchronization is applied.</p><p><b>3.</b> Click <b>Start simulation</b> in the Simulink toolbar. Click the <b>Scope</b> block and observe that the <b>Encoder Output Mismatch</b> remains close to zero. This indicates that the vehicle will skew less compared to the <b>Open Loop Control</b> model.</p><img vspace="5" hspace="5" src="publish_arduinouno_pid_04.png" alt=""> <img vspace="5" hspace="5" src="publish_arduinouno_pid_05.png" alt=""> <h2>Task 6 - Run Closed-Loop Control Model on the Arduino Uno Board<a name="15"></a></h2><p><b>1.</b> Disconnect the battery power wire leading to the Vin terminal on the Arduino Uno board since the board will get powered via a USB cable.</p><p><b>2.</b> Connect the Arduino Uno board to your host computer using USB cable.</p><p><b>3.</b> Select <b>Tools &gt; Run on Target Hardware &gt; Run</b> to download the example model.</p><p><b>4.</b> After the model is downloaded, disconnect the USB cable from your Arduino Uno board.</p><p><b>5.</b> Connect back the battery power wire leading to the Vin terminal on your Arduino Uno board.</p><p><b>6.</b> Place the vehicle on the ground and turn the vehicle switch on. The model runs on the board and the vehicle starts moving.</p><p><b>7.</b> Observe that the path of the vehicle is straighter, as predicted by the simulation.</p><p><b>8.</b> Turn the vehicle switch off.</p><h2>Other Things to Try<a name="16"></a></h2><div><ul><li>Adjust the <b>PID Controller</b> settings. Improve the vehicle's ability to move straight on a rough or tilted surface.</li></ul></div><h2>Summary<a name="17"></a></h2><p>This example showed how to simulate and implement a basic closed-loop controller on an Arduino Uno board. In the example you learned that:</p><div><ul><li>Open-Loop Control does not ensure straight driving in a vehicle with independently powered wheels.</li><li>Closed-Loop Control uses the difference between two encoder outputs to calculate the power that should be applied to each wheel individually.</li><li>Both simulated and actual hardware may be used in the same model, provided that a mechanism for switching between them exists.</li></ul></div><p class="footer">Copyright 2012 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.14<br><br>
+		  MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.
+      </p></div><!--
+##### SOURCE BEGIN #####
+%% Drive with PID Control
+%
+% This example shows how to simulate a simple closed-loop control algorithm
+% in Simulink(R) and how to run it on an Arduino(R) Uno board.
+ 
+% Copyright 2012 The MathWorks, Inc.
+
+ 
+%% Introduction
+%
+% In a vehicle using independent wheel control, applying the same power to
+% each wheel generally does not result in the vehicle moving straight. This
+% is caused by mechanical and surface differences experienced by each of
+% the wheels. To reduce deviation in the vehicle heading, a better approach
+% is to use a closed-loop controller which adjusts the power applied to two
+% motors based on the difference in their rates of rotation. One such
+% controller is a well-known proportional–integral–derivative (PID)
+% controller.
+%
+% PID control is a basic control loop feedback mechanism. The controller
+% minimizes the difference between the measured and the desired value of a
+% chosen system variable by adjusting the system control inputs.
+%
+% This example shows you how to simulate the controller using a simple
+% plant model, first with no feedback control (Open-Loop Control), and then
+% with feedback control (Closed-Loop Control). This example also
+% illustrates how to switch between simulating the PID controller and
+% running it on hardware in the same model.
+
+
+%% Prerequisites
+%
+% We recommend completing
+% <matlab:helpview(fullfile(realtime.internal.getArduinoUnoTargetRoot,'arduinounodemos','html','publish_arduinouno_gettingstarted.html'),'-helpbrowser') Getting Started with Arduino Uno Hardware>.
+%
+
+
+%% Required Hardware
+% 
+% To run this example you will need the following hardware:
+% 
+% Controller board:
+% 
+% * Arduino Uno board
+% * USB cable
+% 
+% Motor controller parts:
+% 
+% * Texas Instruments(TM) SN754410 quadruple high-current half-H driver
+% * Two 10 kOhm resistors
+% * Small breadboard
+% * Breadboard wires
+% 
+% A four-wheel vehicle:
+% 
+% * A mobile platform with four wheels powered by four DC motors
+% * Two optical encoders wired to front DC motors
+% * A battery pack consisting of five AA 1.5V batteries
+% * A single pole, single throw (SPST) switch
+% 
+% Notes:
+% 
+% * This example was tested with the four-wheel vehicle built using DFRobot 
+% 4WD Arduino-Compatible Platform w/Encoders. 
+% * Other vehicle kits can be used as long as they have the same mechanical 
+% characteristics (four wheels, four DC motors and two encoders). 
+% * With a minor modification to the controller connections, a vehicle with 
+% only two DC motors can be used as well.
+% * Encoders used in this example are ten-step encoders. Different encoders
+% can be used with minor modifications to the example models.
+
+open_system('arduinouno_drive_openloop');
+
+
+%% Task 1 - Build the Vehicle
+%
+% *1.* Assemble the mobile platform. Attach the two DC motors with encoders
+% to the front wheels.
+% 
+% *2.* Attach the other two DC motors to the rear wheels. If your platform
+% has only two DC motors, let the rear wheels rotate freely.
+% 
+% *3.* Assemble the battery pack and attach it to the mobile platform using
+% suitable fasteners.
+% 
+% *4.* Connect the positive end of the battery pack to the switch using the 
+% breadboard wires.
+% 
+% Note:
+% If you are using DFRobot 4WD Arduino-Compatible Platform w/Encoders kit, 
+% follow the vendor's instructions.
+
+
+%% Task 2 - Build the Motor Controller
+%
+% The Arduino Uno board alone cannot provide high enough current to power
+% DC motors. For that purpose, you will build the motor controller based on
+% the Texas Instruments SN754410 quadruple high-current half-H driver.
+% 
+% *1.* Assemble the motor controller using the following circuit diagram.
+% 
+% <<arduinouno_pid.png>>
+% 
+% *2.* Connect the controller to the vehicle battery pack following the
+% same circuit diagram.
+%
+
+
+%% Task 3 - Simulate Open-Loop Control Model
+%
+% This step illustrates that independently powered wheels cause deviations
+% in vehicle heading.
+%
+% *1.* Open the <matlab:arduinouno_drive_openloop model>. Observe two 
+% subsystems in the model.
+%
+% *2.* Open the *Open-Loop Controller* subsystem. This subsystem controls
+% the vehicle driving. Observe that the controller does not use the
+% difference between two encoder outputs to control the motors.
+%
+% *3.* Notice the *Motors* subsystem. The subsystem contains both simulated
+% and actual motors. The Environment Controller block takes the outputs of
+% the simulated or actual motors, depending on the current environment.
+% This allows you to represent both simulated and actual motors in one
+% model. As an alternative, you may create two models, one for simulation,
+% and the other one for running on actual hardware.
+%
+% *4.* Click *Start simulation* in the Simulink toolbar. Click the *Scope*
+% block and observe that the *Encoder Output Mismatch* increases over time.
+% This indicates that the vehicle will not move straight.
+%
+
+%% 
+open_system('arduinouno_drive_openloop/Motors')
+%% 
+set_param('arduinouno_drive_openloop', 'StopTime', '120');
+sim('arduinouno_drive_openloop')
+%% 
+open_system('arduinouno_drive_openloop/Scope')
+
+
+%% Task 4 - Run Open-Loop Control Model on the Arduino Uno Board
+%
+% *1.* Disconnect the battery power wire leading to the Vin terminal on the
+% Arduino Uno board since the board will get powered via a USB cable.
+% 
+% *2.* Connect the Arduino Uno board to your host computer using USB
+% cable.
+% 
+% *3.* Select *Tools > Run on Target Hardware > Run* to download the
+% example model.
+% 
+% *4.* After the model is downloaded, disconnect the USB cable from your
+% Arduino Uno board. 
+% 
+% *5.* Connect back the battery power wire leading to the Vin terminal on
+% your Arduino Uno board.
+% 
+% *6.* Place the vehicle on the ground and turn the vehicle switch on. The
+% model runs on the board and the vehicle starts moving.
+%
+% *7.* Notice that the path of the vehicle is not straight, as predicted by
+% the simulation.
+%
+% *8.* Turn the vehicle switch off.
+%
+
+
+%% Task 5 - Simulate Closed-Loop Control Model
+%
+% *1.* Open the <matlab:arduinouno_drive_closedloop model>. Observe
+% two subsystems in the model.
+%
+% *2.* Double-click *PID Controller* subsystem. Notice that the
+% proportional (P) control is used to synchronize two motors when the
+% vehicle runs straight. Also, notice that during a turn, no
+% synchronization is applied.
+%
+% *3.* Click *Start simulation* in the Simulink toolbar. Click the *Scope*
+% block and observe that the *Encoder Output Mismatch* remains close to
+% zero. This indicates that the vehicle will skew less compared to the
+% *Open Loop Control* model.
+%
+
+load_system('arduinouno_drive_closedloop')
+
+%% 
+open_system('arduinouno_drive_closedloop/PID Controller')
+%% 
+set_param('arduinouno_drive_closedloop', 'StopTime', '120');
+sim('arduinouno_drive_closedloop')
+%% 
+open_system('arduinouno_drive_closedloop/Scope')
+
+
+%% Task 6 - Run Closed-Loop Control Model on the Arduino Uno Board
+%
+% *1.* Disconnect the battery power wire leading to the Vin terminal on the
+% Arduino Uno board since the board will get powered via a USB cable.
+% 
+% *2.* Connect the Arduino Uno board to your host computer using USB
+% cable.
+% 
+% *3.* Select *Tools > Run on Target Hardware > Run* to download the
+% example model.
+% 
+% *4.* After the model is downloaded, disconnect the USB cable from your
+% Arduino Uno board. 
+% 
+% *5.* Connect back the battery power wire leading to the Vin terminal on
+% your Arduino Uno board.
+% 
+% *6.* Place the vehicle on the ground and turn the vehicle switch on. The
+% model runs on the board and the vehicle starts moving.
+%
+% *7.* Observe that the path of the vehicle is straighter, as predicted
+% by the simulation.
+%
+% *8.* Turn the vehicle switch off.
+%
+
+
+%% Other Things to Try
+% 
+% * Adjust the *PID Controller* settings. Improve the vehicle's ability to
+% move straight on a rough or tilted surface.
+
+%% Summary
+%
+% This example showed how to simulate and implement a basic closed-loop
+% controller on an Arduino Uno board. In the example you learned that:
+% 
+% * Open-Loop Control does not ensure straight driving in a vehicle with
+% independently powered wheels.
+% * Closed-Loop Control uses the difference between two encoder outputs to
+% calculate the power that should be applied to each wheel individually.
+% * Both simulated and actual hardware may be used in the same model,
+% provided that a mechanism for switching between them exists.
+
+close_system('arduinouno_drive_openloop', 0); 
+close_system('arduinouno_drive_closedloop', 0);
+displayEndOfDemoMessage(mfilename) 
+
+##### SOURCE END #####
+--></body></html>

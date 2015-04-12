@@ -1,0 +1,36 @@
+;//TF-341 Artificial Intelligence Script
+
+desc          = default DAI appear for TF-341
+
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Local var setup here so as not to be reset when toggling between main and shoot scripts
+
+;//Shotdamage protocol
+:state=0:dimlocalvar=beenshot,setvar=beenshot 0
+;//local var flags independent mode or fire-team assignment: FT0=Independent,FT1=Alpha Team,FT2=Bravo Team,FT3=Charlie Team,FT4=Delta Team
+:state=0:dimlocalvar=FT,setvar=FT 0
+;//NPC interact codes: 0=waiting,1=ready,2=active,3=NA,4=reset
+:state=0:dimlocalvar=interact,setvar=interact 0
+;//Set Entity Angle Y-axis
+:state=0:dimlocalvar=SEAY
+
+;//Team Factions
+;//Team 1 (Player team)
+:state=0:aiaddenemy=1 2|5|6,aiaddneutral=1 3,aiaddally=1 4
+;//Team 2 (Enemy team)
+:state=0:aiaddenemy=2 1|4|6,aiaddneutral=2 3,aiaddally=2 5
+;//Team 3 (Neutral team)
+:state=0:aiaddenemy=3 6,aiaddneutral=3 1|2|4|5
+;//Team 4 (Player Friendly team)
+:state=0:aiaddenemy=4 2|5|6,aiaddneutral=1 3,aiaddally=4 1
+;//Team 5 (Enemy Friendly team)
+:state=0:aiaddenemy=5 1|4|6,aiaddneutral=2 3,aiaddally=5 2
+;//Team 6 (Zombie team)
+:state=0:aiaddenemy=6 1|2|3|4|5
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+
+;//Start & Team Settings
+:state=0:setalphafade=100,addaiteam=1,state=1
+:state=1:runfpidefault=1,state=2
+;//End
+

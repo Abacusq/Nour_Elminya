@@ -1,0 +1,236 @@
+;//Artificial Intelligence Script
+;//TF341 debug/QA script by EAI - assign to main AI with standard appear1 (NON-DAI). Req. FPSC x9 v1.18
+;//Assign to TF341 character to easily view animation playback and see the corresponding anim reference number for scripting.
+;//KNOWN ISSUES:  To view anim #0, you must first go up to anim1 then back down to anim0.  DO NOT load multiple characters running this script!
+
+;//Header
+
+desc          = anim viewer
+
+:state=0:dimlocalvar=anim,setvar=anim 1
+:state=0:hudreset,hudx=50,hudy=90,hudtext=[PgUp] / [PgDn] = NEXT / PREV. Animation,hudname=ANIMprompt,hudhide=1,hudmake=display
+
+::rotatey=2
+;//:state=1:incframe=%anim
+;//:state=1,animationover=%anim:setframe=%anim,incframe=%anim
+::animate=%anim
+::fpgcrawtextsize=24,fpgcrawtextfont=verdana,fpgcrawtextx=50,fpgcrawtexty=85
+
+:state=1,keypressed=201 1:state=2,addvar=anim 1,sound=audiobank\switches\click.wav
+:state=1,keypressed=209 1:state=3,subvar=anim 1,sound=audiobank\switches\click.wav
+
+:state=3,varequal=anim -1:setvar=anim 149
+
+:varequal=anim 0:fpgcrawtext=anim0 Spawn
+:varequal=anim 1:fpgcrawtext=anim1 Aimed Idle
+:varequal=anim 2:fpgcrawtext=anim2 Aimed Move Slow
+:varequal=anim 3:fpgcrawtext=anim3 Strafe Left
+:varequal=anim 4:fpgcrawtext=anim4 Strafe Right
+:varequal=anim 5:fpgcrawtext=anim5 Aimed Move Fast
+:varequal=anim 6:fpgcrawtext=anim6 Throw / Reload
+:varequal=anim 7:fpgcrawtext=anim7 Climb
+:varequal=anim 8:fpgcrawtext=anim8 MELEE PUNCH / STRIKE1
+:varequal=anim 9:fpgcrawtext=anim9 MELEE UPPERCUT / STRIKE2
+:varequal=anim 10:fpgcrawtext=anim10 N/A
+
+:state=2,varequal=anim 10:setvar=anim 11
+:state=3,varequal=anim 10:setvar=anim 9
+
+:varequal=anim 11:fpgcrawtext=anim11 Impact Front
+:varequal=anim 12:fpgcrawtext=anim12 Bounce Front
+:varequal=anim 13:fpgcrawtext=anim13 Get Up Front
+:varequal=anim 14:fpgcrawtext=anim14 Impact Back
+:varequal=anim 15:fpgcrawtext=anim15 Bounce Back
+:varequal=anim 16:fpgcrawtext=anim16 Get Up Back
+:varequal=anim 17:fpgcrawtext=anim17 Impact Left
+:varequal=anim 18:fpgcrawtext=anim18 Bounce Left
+:varequal=anim 19:fpgcrawtext=anim19 N/A
+
+:state=2,varequal=anim 19:setvar=anim 20
+:state=3,varequal=anim 19:setvar=anim 18
+
+:varequal=anim 20:fpgcrawtext=anim20 Impact Right
+:varequal=anim 21:fpgcrawtext=anim21 Bounce Right
+:varequal=anim 22:fpgcrawtext=anim22 N/A
+
+:state=2,varequal=anim 22:setvar=anim 23
+:state=3,varequal=anim 22:setvar=anim 21
+
+:varequal=anim 23:fpgcrawtext=anim23 MELEE KICK
+:varequal=anim 24:fpgcrawtext=anim24 TRANSITION CROUCH
+:varequal=anim 25:fpgcrawtext=anim25 TRANSITION STAND
+:varequal=anim 26:fpgcrawtext=anim26 MELEE STAND DEFEND / STAND COCK
+:varequal=anim 27:fpgcrawtext=anim27 MELEE STAND LEFT PUNCH / STAND RECOIL SEMI
+:varequal=anim 28:fpgcrawtext=anim28 SHIELD BACKHAND / STAND RECOIL BURST
+:varequal=anim 29:fpgcrawtext=anim29 MELEE STAND AIM DOWN	
+:varequal=anim 30:fpgcrawtext=anim30 MELEE STAND AIM UP
+:varequal=anim 31:fpgcrawtext=anim31 Crouched Idle
+:varequal=anim 32:fpgcrawtext=anim32 Crouched Move
+:varequal=anim 33:fpgcrawtext=anim33 STACK IDLE
+:varequal=anim 34:fpgcrawtext=anim34 STACK MOVE SLOW
+:varequal=anim 35:fpgcrawtext=anim35 SHIELD CROUCH ADVANCE
+:varequal=anim 36:fpgcrawtext=anim36 Crouched Throw / Crouched Reload
+:varequal=anim 37:fpgcrawtext=anim37 MELEE DEFEND IDLE / CROUCH COCK
+:varequal=anim 38:fpgcrawtext=anim38 SHIELD CROUCH IDLE / CROUCH RECOIL SEMI
+:varequal=anim 39:fpgcrawtext=anim39 SHIELD CROUCH IDLE 2 / CROUCH RECOIL BURST
+:varequal=anim 40:fpgcrawtext=anim40 GUARD MOVE FAST
+:varequal=anim 41:fpgcrawtext=anim41 N/A
+
+:state=2,varequal=anim 41:setvar=anim 42
+:state=3,varequal=anim 41:setvar=anim 40
+
+:varequal=anim 42:fpgcrawtext=anim42 Recover Back
+:varequal=anim 43:fpgcrawtext=anim43 Recover Face
+:varequal=anim 44:fpgcrawtext=anim44 FLINCH GUT
+:varequal=anim 45:fpgcrawtext=anim45 FLINCH LEFT
+:varequal=anim 46:fpgcrawtext=anim46 FLINCH RIGHT
+:varequal=anim 47:fpgcrawtext=anim47 JUMP
+:varequal=anim 48:fpgcrawtext=anim48 GUARD IDLE
+:varequal=anim 49:fpgcrawtext=anim49 GUARD MOVE SLOW
+
+:varequal=anim 50:setvar=anim 100
+
+:varequal=anim 50:fpgcrawtext=anim50 Weapon Spawn
+:varequal=anim 51:fpgcrawtext=anim51 Weapon Idle
+:varequal=anim 52:fpgcrawtext=anim52 Weapon Aimed Move Slow
+:varequal=anim 53:fpgcrawtext=anim53 Weapon Strafe Left
+:varequal=anim 54:fpgcrawtext=anim54 Weapon Strafe Right
+:varequal=anim 55:fpgcrawtext=anim55 Weapon Aimed Move Fast
+:varequal=anim 56:fpgcrawtext=anim56 Weapon Reload
+:varequal=anim 57:fpgcrawtext=anim57 Weapon Climb
+:varequal=anim 58:fpgcrawtext=anim58 Weapon Melee 1
+:varequal=anim 59:fpgcrawtext=anim59 Weapon Melee 2
+:varequal=anim 60:fpgcrawtext=anim60 N/A
+:varequal=anim 61:fpgcrawtext=anim61 Weapon Impact Front
+:varequal=anim 62:fpgcrawtext=anim62 Weapon Bounce Front
+:varequal=anim 63:fpgcrawtext=anim63 Weapon Get Up Front
+:varequal=anim 64:fpgcrawtext=anim64 Weapon impact Back
+:varequal=anim 65:fpgcrawtext=anim65 Weapon Bounce Back
+:varequal=anim 66:fpgcrawtext=anim66 Weapon Get Up Back
+:varequal=anim 67:fpgcrawtext=anim67 Weapon impact Left
+:varequal=anim 68:fpgcrawtext=anim68 Weapon Bounce Left
+:varequal=anim 69:fpgcrawtext=anim69 N/A
+:varequal=anim 70:fpgcrawtext=anim70 Weapon Impact Right
+:varequal=anim 71:fpgcrawtext=anim71 Weapon Bounce Right
+:varequal=anim 72:fpgcrawtext=anim72 N/A
+:varequal=anim 73:fpgcrawtext=anim73 Weapon MELEE KICK
+:varequal=anim 74:fpgcrawtext=anim74 Weapon TRANSITION CROUCH
+:varequal=anim 75:fpgcrawtext=anim75 Weapon TRANSITIONSTAND
+:varequal=anim 76:fpgcrawtext=anim76 Weapon STAND COCK
+:varequal=anim 77:fpgcrawtext=anim77 Weapon STAND RECOIL SEMI
+:varequal=anim 78:fpgcrawtext=anim78 Weapon STAND RECOIL BURST
+:varequal=anim 79:fpgcrawtext=anim79 Weapon STAND AIM DOWN
+:varequal=anim 80:fpgcrawtext=anim80 Weapon STAND AIM UP
+:varequal=anim 81:fpgcrawtext=anim81 Weapon Crouched Idle
+:varequal=anim 82:fpgcrawtext=anim82 Weapon Crouched Move  (same)
+:varequal=anim 83:fpgcrawtext=anim83 Weapon STACK IDLE
+:varequal=anim 84:fpgcrawtext=anim84 Weapon STACK MOVE SLOW
+:varequal=anim 85:fpgcrawtext=anim85 Weapon Crouched Move  (same)
+:varequal=anim 86:fpgcrawtext=anim86 Weapon Crouched Reload
+:varequal=anim 87:fpgcrawtext=anim87 Weapon CROUCH COCK
+:varequal=anim 88:fpgcrawtext=anim88 Weapon CROUCH RECOIL	SEMI
+:varequal=anim 89:fpgcrawtext=anim89 Weapon CROUCH RECOIL	BURST
+:varequal=anim 90:fpgcrawtext=anim90 Weapon GUARD MOVE FAST
+:varequal=anim 91:fpgcrawtext=anim91 N/A
+:varequal=anim 92:fpgcrawtext=anim92 Weapon Recover Back
+:varequal=anim 93:fpgcrawtext=anim93 Weapon Recover Face
+:varequal=anim 94:fpgcrawtext=anim94 Weapon FLINCH GUT
+:varequal=anim 95:fpgcrawtext=anim95 Weapon FLINCH LEFT
+:varequal=anim 96:fpgcrawtext=anim96 Weapon FLINCH RIGHT
+:varequal=anim 97:fpgcrawtext=anim97 Weapon JUMP	
+:varequal=anim 98:fpgcrawtext=anim98 Weapon GUARD IDLE
+:varequal=anim 99:fpgcrawtext=anim99 Weapon GUARD MOVE SLOW
+
+:varequal=anim 99:setvar=anim 49
+
+:varequal=anim 100:fpgcrawtext=anim100 TALK NEUTRAL 1
+:varequal=anim 101:fpgcrawtext=anim101 TALK NEUTRAL 2
+:varequal=anim 102:fpgcrawtext=anim102 TALK RADIO PTT START
+:varequal=anim 103:fpgcrawtext=anim103 TALK RADIO PTT IDLE
+:varequal=anim 104:fpgcrawtext=anim104 TALK RADIO PTT LOOP
+:varequal=anim 105:fpgcrawtext=anim105 TALK RADIO PTT END
+:varequal=anim 106:fpgcrawtext=anim106 TALK RADIO PTT FULL
+:varequal=anim 107:fpgcrawtext=anim107 N/A
+
+:state=2,varequal=anim 107:setvar=anim 108
+:state=3,varequal=anim 107:setvar=anim 106,resethead
+
+:varequal=anim 108:fpgcrawtext=anim108 GROUND SLUMP IDLE
+:varequal=anim 108,random=15:rotateheadrandom=60
+
+:varequal=anim 109:fpgcrawtext=anim109 GROUND SLUMP GET UP,resethead
+:varequal=anim 110:fpgcrawtext=anim110 MELEE SWORD SLASH
+:varequal=anim 111:fpgcrawtext=anim111 MELEE SWORD STAB
+:varequal=anim 112:fpgcrawtext=anim112 MELEE SWORD RIPOSTE
+:varequal=anim 113:fpgcrawtext=anim113 MELEE SWORD PARRY
+:varequal=anim 114:fpgcrawtext=anim114 MELEE AXE CHOP
+:varequal=anim 115:fpgcrawtext=anim115  N/A
+
+:state=2,varequal=anim 115:setvar=anim 116
+:state=3,varequal=anim 115:setvar=anim 114
+
+:varequal=anim 116:fpgcrawtext=anim116 SHIELD TRANSITION
+:varequal=anim 117:fpgcrawtext=anim117 N/A
+
+:state=2,varequal=anim 117:setvar=anim 118
+:state=3,varequal=anim 117:setvar=anim 116
+
+:varequal=anim 118:fpgcrawtext=anim118 SHIELD IDLE
+:varequal=anim 119:fpgcrawtext=anim119 SHIELD FLINCH
+:varequal=anim 120:fpgcrawtext=anim120 SHIELD ADVANCE
+:varequal=anim 121:fpgcrawtext=anim121 SHIELD THROW NADE
+:varequal=anim 122:fpgcrawtext=anim122 N/A
+
+:state=2,varequal=anim 122:setvar=anim 123
+:state=3,varequal=anim 122:setvar=anim 121
+
+:varequal=anim 123:fpgcrawtext=anim123 SIT CHAIR DIE
+:varequal=anim 124:fpgcrawtext=anim124 SIT CHAIR FLINCH 1
+:varequal=anim 125:fpgcrawtext=anim125 SIT CHAIR FLINCH 2
+:varequal=anim 126:fpgcrawtext=anim126 N/A
+:varequal=anim 127:fpgcrawtext=anim127 N/A
+:varequal=anim 128:fpgcrawtext=anim128 N/A
+:varequal=anim 129:fpgcrawtext=anim129 N/A
+:varequal=anim 130:fpgcrawtext=anim130 N/A
+
+:state=2,varequal=anim 126:setvar=anim 132
+:state=3,varequal=anim 130:setvar=anim 125
+
+:varequal=anim 131:fpgcrawtext=anim131 COWER TO
+:varequal=anim 132:fpgcrawtext=anim132 COWER IDLE
+:varequal=anim 133:fpgcrawtext=anim133 COWER FLINCH
+:varequal=anim 134:fpgcrawtext=anim134 COWER FROM
+:varequal=anim 135:fpgcrawtext=anim135 SIT CHAIR STAND-UP
+:varequal=anim 136:fpgcrawtext=anim136 SIT CHAIR SIT-DOWN
+:varequal=anim 137:fpgcrawtext=anim137 SIT CHAIR
+:varequal=anim 138:fpgcrawtext=anim138 SIT CHAIR KBD
+:varequal=anim 139:fpgcrawtext=anim139 SIT CHAIR KBD TYPE
+:varequal=anim 140:fpgcrawtext=anim140 FEMALE WALK
+:varequal=anim 141:fpgcrawtext=anim141 FEMALE IDLE
+:varequal=anim 142:fpgcrawtext=anim142 FEMALE IDLE 2
+:varequal=anim 143:fpgcrawtext=anim143 N/A
+:varequal=anim 144:fpgcrawtext=anim144 N/A
+:varequal=anim 145:fpgcrawtext=anim145 N/A
+:varequal=anim 146:fpgcrawtext=anim146 N/A
+:varequal=anim 147:fpgcrawtext=anim147 N/A
+
+:state=2,varequal=anim 143:setvar=anim 148
+:state=3,varequal=anim 147:setvar=anim 142
+
+:varequal=anim 148:fpgcrawtext=anim148 DANCEN1
+:varequal=anim 149:fpgcrawtext=anim149 DANCEN2
+
+:varequal=anim 150:setvar=anim 0
+
+:varequal=anim 150:fpgcrawtext=anim150 Weapon TALK NEUTRAL1
+:varequal=anim 151:fpgcrawtext=anim151 Weapon TALK NEUTRAL2 (same)
+:varequal=anim 152:fpgcrawtext=anim152 TALK RADIO PTT START
+:varequal=anim 153:fpgcrawtext=anim153 TALK RADIO PTT IDLE
+:varequal=anim 154:fpgcrawtext=anim154 Weapon TALK RADIO PTT LOOP
+:varequal=anim 155:fpgcrawtext=anim155 Weapon TALK RADIO PTT END
+:varequal=anim 156:fpgcrawtext=anim156 Weapon TALK RADIO PTT FULL
+
+:state=0:hudshow=ANIMprompt,state=1,setframe=%anim
+:state=2,keypressed=201 0:state=1,setframe=%anim
+:state=3,keypressed=209 0:state=1,setframe=%anim
+;End of Script

@@ -1,0 +1,19 @@
+;//TF341 Artificial Intelligence Script
+
+;Header
+
+desc          = clear interaction, activate ragdoll and vape when player not looking
+
+;//Triggers
+:state=0,varequal=interact 2:setvar=CONVO 3,hudunshow=npc1_name,setvar=clearconvo 1,setvar=convoselect 0,setvar=cindex 0,setvar=cinput 0,setvar=plrbusy 0,setvar=interact 4,setvar=plrcam 0,state=1
+:state=0,varnotequal=interact 2:state=1
+:state=1,varequal=FT 0:state=2
+:state=1,varequal=FT 1:subvar=FT1 1,state=2
+:state=1,varequal=FT 2:subvar=FT2 1,state=2
+:state=1,varequal=FT 3:subvar=FT3 1,state=2
+:state=1,varequal=FT 4:subvar=FT4 1,state=2
+:state=2:state=3,floatrate=1,coloff,ragdoll
+:state=3,inview=0,plrdistfurther=200:state=4,etimerstart
+:state=4,inview=0,etimergreater=5000,plrdistfurther=200:state=5,destroy
+
+;//End of Script

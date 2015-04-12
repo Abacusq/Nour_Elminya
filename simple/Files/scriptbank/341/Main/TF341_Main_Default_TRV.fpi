@@ -1,0 +1,76 @@
+;//TF-341 Artificial Intelligence Script
+;//Script by Errant AI, Requires FPSC x9 v1.18 Beta 6 or later and TF341 TRV Bot character
+
+desc          = DarkAI TF341 default AI for enemy or non-recruitable ally TRV Bot - Assign to Main AI slot must be used with a Shoot AI script
+
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Dark AI TRV Bot Animations
+::aisetspeed=70
+:random=100:rotateheadrandom=140,sound=audiobank\341\trvservo.wav
+:idle=0:sound=audiobank\341\trvhum.wav
+:state=0:dimlocalvar=checkmove,setvar=checkmove 1
+:state=0:dimlocalvar=botmoving,setvar=botmoving 0
+:state=0:dimlocalvar=botanim,setvar=botanim 0
+:varequal=checkmove 1,idle=1,varnotequal=botmoving 0:setvar=botmoving 0,setvar=checkmove 0,setvar=botanim 0
+:varequal=checkmove 1,idle=1,varequal=botmoving 0:setvar=checkmove 0
+:varequal=checkmove 1,strafingleft=1,varnotequal=botmoving 3:setvar=botmoving 3,setvar=checkmove 0,setvar=botanim 0
+:varequal=checkmove 1,strafingleft=1,varequal=botmoving 3:setvar=checkmove 0
+:varequal=checkmove 1,strafingright=1,varnotequal=botmoving 2:setvar=botmoving 2,setvar=checkmove 0,setvar=botanim 0
+:varequal=checkmove 1,strafingright=1,varequal=botmoving 2:setvar=checkmove 0
+:varequal=checkmove 1,idle=0,strafingleft=0,strafingright=0,varnotequal=botmoving 1:setvar=botmoving 1,setvar=checkmove 0,setvar=botanim 0
+:varequal=checkmove 1,idle=0,strafingleft=0,strafingright=0,varequal=botmoving 1:setvar=checkmove 0
+;//idle
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 0,varequal=botanim 0:setvar=botanim 1
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 0,varequal=botanim 1:setframe=7,setvar=botanim 2
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 0,varequal=botanim 2:incframe=7
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 0,varequal=botanim 2,frameatend=7:setvar=checkmove 1,setframe=7
+;//:isdarkai=1,varequal=checkmove 0,varequal=botmoving 0,varequal=botanim 2,animationover=7:setvar=checkmove 1
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 0,idle=0:setvar=checkmove 1,setframe=7
+;//moving
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 1,varequal=botanim 0:setvar=botanim 1
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 1,varequal=botanim 1:setframe=5,setvar=botanim 2
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 1,varequal=botanim 2:incframe=5
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 1,varequal=botanim 2,frameatend=5:setvar=checkmove 1,setframe=5
+;//:isdarkai=1,varequal=checkmove 0,varequal=botmoving 1,varequal=botanim 2,animationover=5:setvar=checkmove 1
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 1,idle=1:setvar=checkmove 1,setframe=7
+;//strafe right
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 2,varequal=botanim 0:setvar=botanim 1
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 2,varequal=botanim 1:setframe=4,setvar=botanim 2
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 2,varequal=botanim 2:incframe=4
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 2,varequal=botanim 2,frameatend=4:setvar=checkmove 1,setframe=2
+;//:isdarkai=1,varequal=checkmove 0,varequal=botmoving 2,varequal=botanim 2,animationover=4:setvar=checkmove 1
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 2,idle=1:setvar=checkmove 1,setframe=7
+;//strafe left
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 3,varequal=botanim 0:setvar=botanim1
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 3,varequal=botanim 1:setframe=3,setvar=botanim 2
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 3,varequal=botanim 2:incframe=3
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 3,varequal=botanim 2,frameatend=3:setvar=checkmove 1,setframe=3
+;//:isdarkai=1,varequal=checkmove 0,varequal=botmoving 3,varequal=botanim 2,animationover=3:setvar=checkmove 1
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 3,idle=1:setvar=checkmove 1,setframe=7
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Randomly follow plr if friendly
+:state=1,aiteam=1,plrdistwithin=1000,plrdistfurther=100,aihastarget=0,aicanshoot=0,etimergreater=5000,random=50:aifollowplr=1,state=2
+:state=1,aiteam=1,etimergreater=500,random=50:aifollowplr=0,state=2
+:aiteam=1,plrdistwithin=100:aifollowplr=0
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Shot Damage - go to shoot script
+:shotdamage=1:bloodspurt=2,aisettarget,aicallteam=5000,state=2,resethead,shootplr
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Watch for enemy
+:always:airotatetotarget
+;//Listen for enemy
+:state=1,aicanshoot=0,aiheardsound=500:aimovetosound
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Assist team if called while in standby mode (RoE permitting)
+:isdarkai=1,aicalled=2000,aihastarget=0,idle=1:airespondtocall
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Go to shoot script
+:aicanshoot=1:aisettarget,etimerstart,aicallteam=5000,state=2,resethead,shootplr
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Open Doors
+:nearactivatable=0:settarget,activatetarget=2
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Start Script
+:state=0:setaiactive=1,alwaysactive=1,aiattackawareness=1,state=2,aiusefullaim=1,setvar=checkmove 1
+:state=2:state=1,etimerstart,reloadweapon,setvar=checkmove 1
+;//End

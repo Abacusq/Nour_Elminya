@@ -1,0 +1,192 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Servo Control</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-03-20"><meta name="DC.source" content="publish_arduinouno_servocontrol.m"><link rel="stylesheet" type="text/css" href="../../../../../matlab/helptools/private/style.css"></head><body><div class="header"><div class="left"></div><div class="right">&nbsp;</div></div><div class="content"><h1>Servo Control</h1><!--introduction--><p>This example shows you how to use Target for Use with Arduino&reg; Uno Hardware to control a standard servo motor.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Introduction</a></li><li><a href="#2">Prerequisites</a></li><li><a href="#3">Required Hardware</a></li><li><a href="#4">Task 1 - Connect the Servo Motor to the Arduino Uno Board</a></li><li><a href="#5">Task 2 - Set the Servo Motor Position via an Internal Source</a></li><li><a href="#6">Task 3 - Control the Servo Motor Position via a Potentiometer</a></li><li><a href="#7">Task 4 - Control the Servo Motor Position via a Photocell</a></li><li><a href="#8">Other Things to Try</a></li><li><a href="#9">Summary</a></li></ul></div><h2>Introduction<a name="1"></a></h2><p>Target for Use with Arduino Uno Hardware enables you to create and run Simulink&reg; models on Arduino Uno board. The target includes a library of Simulink blocks for configuring and accessing Arduino sensors, actuators and communication interfaces.</p><p>In this example you will learn how to create Simulink model that controls a standard servo motor. In a standard servo motor, the shaft position can be precisely set, usually between 0 and 180 degrees. Servo motors are used in many industrial, military and consumer applications and products.</p><h2>Prerequisites<a name="2"></a></h2><p>We recommend completing <a href="matlab:helpview(fullfile(realtime.internal.getArduinoUnoTargetRoot,'arduinounodemos','html','publish_arduinouno_gettingstarted.html'),'-helpbrowser')">Getting Started with Arduino Uno Hardware</a>.</p><h2>Required Hardware<a name="3"></a></h2><p>To run this example you will need the following hardware:</p><div><ul><li>Arduino Uno board</li><li>USB cable</li><li>Standard servo motor</li><li>Potentiometer</li><li>CdS photocell</li><li>10 kOhm resistor</li><li>Breadboard wires</li><li>Small breadboard (recommended)</li></ul></div><img vspace="5" hspace="5" src="publish_arduinouno_servocontrol_01.png" alt=""> <h2>Task 1 - Connect the Servo Motor to the Arduino Uno Board<a name="4"></a></h2><p>In this task, you will connect your motor to the Arduino Uno board. Servo motors have three wires: power, ground, and signal. Connect them as described below.</p><p><b>1.</b> Connect the power wire (usually red) to the 5V pin.</p><p><b>2.</b> Connect the ground wire (usually black) to the ground pin.</p><p><b>3.</b> Connect the signal wire (usually orange) to digital pin 4.</p><p><img vspace="5" hspace="5" src="arduinouno_servocontrol_connections1.png" alt=""> </p><h2>Task 2 - Set the Servo Motor Position via an Internal Source<a name="5"></a></h2><p>In this task you will set the position of the servo motor shaft using an internal source. The shaft angle will vary between 0 and 180 degrees, up and down.</p><p><b>1.</b> Open the <a href="matlab:arduinouno_servocontrol_sweep">Servo Control</a> model.</p><p><b>2.</b> Notice the <b>Standard Servo Write</b> block. The block sets the new angle of the servo motor shaft every 0.01 second.</p><p><b>3.</b> In your Simulink model, select <b>Tools &gt; Run on Target Hardware &gt; Run</b>.</p><p><b>4.</b> When the model starts running on the Arduino Uno board, observe the motor shaft position sweeping between 0 and 180 degrees.</p><h2>Task 3 - Control the Servo Motor Position via a Potentiometer<a name="6"></a></h2><p>In this task you will set the position of the servo motor shaft manually, using a potentiometer. Connect the outer potentiometer terminals to 5V and GND pins on your Arduino Uno board. Connect the middle terminal to analog input pin 0. As your rotate the potentiometer, its resistance changes. As a result, the voltage at the analog input pin changes as well. Your task is to set the servo motor angle proportional to this voltage.</p><p><img vspace="5" hspace="5" src="arduinouno_servocontrol_connections2.png" alt=""> </p><p><b>1.</b> In MATLAB&reg;, select File &gt; New &gt; Model.</p><p><b>2.</b> Enter <a href="matlab:simulink">simulink</a> at the MATLAB&reg; prompt. This opens the Simulink Library Browser.</p><p><b>3.</b> In the Simulink Library Browser, navigate to <b>Target for Use with Arduino Uno Hardware</b>.</p><p><b>4.</b> Drag the <b>Analog Input</b> block into the model. Double-click the block and set the <b>Pin number</b> to 0, and the <b>Sample time</b> to 0.01 second.</p><p><b>5.</b> Drag the <b>Standard Servo Write</b> block into the model. Double-click the block and set the <b>Pin number</b> to 4.</p><p><b>6.</b> Connect the <b>Analog Input</b> and the <b>Standard Servo Write</b> blocks.</p><p><b>7.</b> From Simulink Math Operations library, drag the <b>Gain</b> block into the model and drop it on the line connecting the <b>Analog Input</b> and the <b>Standard Servo Write</b> block. Double-click the <b>Gain</b> block and set its value to 0.1760 (maximum servo motor displacement in degrees divided by analog input digital resolution i.e. 180/1023).</p><p><b>8.</b> In your model, select <b>Tools &gt; Run on Target Hardware &gt; Prepare to Run...</b>.</p><p><b>9.</b> Review the parameters in the dialog that opens. Unless already set, set the <b>Target hardware</b> parameter to Arduino Uno.</p><p><b>10.</b> In the model, select <b>Tools &gt; Run on Target Hardware &gt; Run</b>.</p><p><b>11.</b> When the model starts running on Arduino Uno board, observe the motor shaft sweeping between 0 and 180 degrees.</p><p>If you have trouble creating the model as described above, you can use the <a href="matlab:arduinouno_servocontrol_potentiometer">Servo Control</a> model.</p><h2>Task 4 - Control the Servo Motor Position via a Photocell<a name="7"></a></h2><p>In this task you will create a model that sets the position of the servo motor according to light intensity detected by a photocell. In a dark room the motor shaft should be positioned at 0 degrees, while in a bright room it should be positioned at 180 degrees.</p><p>Use a photocell and a resistor instead of the potentiometer you used in Task 3. Connect one end of the photocell to the 5V pin on the Arduino Uno board. Next, connect one end of the resistor to the GND pin on the board. Connect the other ends of the photocell and the resistor together and then to the analog input pin 0 on the board.</p><p><img vspace="5" hspace="5" src="arduinouno_servocontrol_connections3.png" alt=""> </p><p>The model will be similar to the one used in Task 3.</p><h2>Other Things to Try<a name="8"></a></h2><p>Experiment with other blocks in the Arduino block library. For example:</p><div><ul><li>Use <b>Digital Input</b> block to adjust the motor shaft position depending on the external control signal or signals.</li><li>Use <b>Standard Servo Read</b> block to read the motor shaft position and compare it with the desired position.</li></ul></div><h2>Summary<a name="9"></a></h2><p>This example showed you how to use Target for Use with Arduino Uno Hardware to control a standard servo motor. In this example you learned that:</p><div><ul><li>Standard Servo Write block allows you to set the servo motor shaft position, usually in the range from 0 to 180 degrees.</li><li>Analog Input block measures the voltage applied to an Arduino analog input pin. Variety of sensors can be attached to analog pins.</li></ul></div><p class="footer">Copyright 2012 The MathWorks, Inc.<br>
+          Published with MATLAB&reg; 7.14<br><br>
+		  MATLAB and Simulink are registered trademarks of The MathWorks, Inc.  Please see <a href="http://www.mathworks.com/trademarks">www.mathworks.com/trademarks</a> for a list of other trademarks owned by The MathWorks, Inc.  Other product or brand names are trademarks or registered trademarks of their respective owners.
+      </p></div><!--
+##### SOURCE BEGIN #####
+%% Servo Control
+%
+% This example shows you how to use Target for Use with Arduino(R) Uno
+% Hardware to control a standard servo motor.
+ 
+% Copyright 2012 The MathWorks, Inc.
+ 
+
+%% Introduction
+%
+% Target for Use with Arduino Uno Hardware enables you to create and run
+% Simulink(R) models on Arduino Uno board. The target includes a library
+% of Simulink blocks for configuring and accessing Arduino sensors,
+% actuators and communication interfaces.
+% 
+% In this example you will learn how to create Simulink model that controls a
+% standard servo motor. In a standard servo motor, the shaft position can
+% be precisely set, usually between 0 and 180 degrees. Servo motors are
+% used in many industrial, military and consumer applications and products.
+%
+
+%% Prerequisites
+%
+% We recommend completing
+% <matlab:helpview(fullfile(realtime.internal.getArduinoUnoTargetRoot,'arduinounodemos','html','publish_arduinouno_gettingstarted.html'),'-helpbrowser') Getting Started with Arduino Uno Hardware>.
+%
+
+
+%% Required Hardware
+% 
+% To run this example you will need the following hardware:
+% 
+% * Arduino Uno board
+% * USB cable
+% * Standard servo motor 
+% * Potentiometer
+% * CdS photocell
+% * 10 kOhm resistor
+% * Breadboard wires
+% * Small breadboard (recommended)
+
+
+open_system('arduinouno_servocontrol_sweep');
+ 
+
+%% Task 1 - Connect the Servo Motor to the Arduino Uno Board
+%
+% In this task, you will connect your motor to the Arduino Uno board. Servo
+% motors have three wires: power, ground, and signal. Connect them as
+% described below.
+%
+% *1.* Connect the power wire (usually red) to the 5V pin.
+%
+% *2.* Connect the ground wire (usually black) to the ground pin.
+%
+% *3.* Connect the signal wire (usually orange) to digital pin 4.
+%
+% <<arduinouno_servocontrol_connections1.png>>
+%
+
+
+
+%% Task 2 - Set the Servo Motor Position via an Internal Source 
+%
+% In this task you will set the position of the servo motor shaft using an
+% internal source. The shaft angle will vary between 0 and 180 degrees, up
+% and down.
+%
+% *1.* Open the <matlab:arduinouno_servocontrol_sweep Servo Control> model.
+%
+% *2.* Notice the *Standard Servo Write* block. The block sets the new
+% angle of the servo motor shaft every 0.01 second.
+%
+% *3.* In your Simulink model, select *Tools > Run on Target Hardware >
+% Run*.
+%
+% *4.* When the model starts running on the Arduino Uno board, observe
+% the motor shaft position sweeping between 0 and 180 degrees.
+%
+%
+
+
+%% Task 3 - Control the Servo Motor Position via a Potentiometer
+%
+% In this task you will set the position of the servo motor shaft manually,
+% using a potentiometer. Connect the outer potentiometer terminals to 5V
+% and GND pins on your Arduino Uno board. Connect the middle terminal to
+% analog input pin 0. As your rotate the potentiometer, its resistance
+% changes. As a result, the voltage at the analog input pin changes as
+% well. Your task is to set the servo motor angle proportional to this
+% voltage.
+%
+% <<arduinouno_servocontrol_connections2.png>>
+%
+% *1.* In MATLAB(R), select File > New > Model.
+%
+% *2.* Enter <matlab:simulink simulink> at the MATLAB(R) prompt. This opens
+% the Simulink Library Browser.
+%
+% *3.* In the Simulink Library Browser, navigate to *Target for Use with
+% Arduino Uno Hardware*.
+%
+% *4.* Drag the *Analog Input* block into the model. Double-click the block
+% and set the *Pin number* to 0, and the *Sample time* to 0.01 second.
+%
+% *5.* Drag the *Standard Servo Write* block into the model. Double-click 
+% the block and set the *Pin number* to 4.
+%
+% *6.* Connect the *Analog Input* and the *Standard Servo Write* blocks.
+%
+% *7.* From Simulink Math Operations library, drag the *Gain* block into
+% the model and drop it on the line connecting the *Analog Input* and the
+% *Standard Servo Write* block. Double-click the *Gain* block and set its
+% value to 0.1760 (maximum servo motor displacement in degrees divided by
+% analog input digital resolution i.e. 180/1023).
+%
+% *8.* In your model, select *Tools > Run on Target Hardware > Prepare to
+% Run...*.
+%
+% *9.* Review the parameters in the dialog that opens. Unless already set,
+% set the *Target hardware* parameter to Arduino Uno.
+%
+% *10.* In the model, select *Tools > Run on Target Hardware > Run*.
+%
+% *11.* When the model starts running on Arduino Uno board, observe the
+% motor shaft sweeping between 0 and 180 degrees.
+%
+% If you have trouble creating the model as described above, you can use
+% the <matlab:arduinouno_servocontrol_potentiometer Servo Control> model.
+%
+
+
+%% Task 4 - Control the Servo Motor Position via a Photocell
+%
+% In this task you will create a model that sets the position of the servo
+% motor according to light intensity detected by a photocell. In a dark
+% room the motor shaft should be positioned at 0 degrees, while in a bright
+% room it should be positioned at 180 degrees. 
+%
+% Use a photocell and a resistor instead of the potentiometer you used in
+% Task 3. Connect one end of the photocell to the 5V pin on the Arduino Uno
+% board. Next, connect one end of the resistor to the GND pin on the board.
+% Connect the other ends of the photocell and the resistor together and
+% then to the analog input pin 0 on the board.
+%
+% <<arduinouno_servocontrol_connections3.png>>
+%
+% The model will be similar to the one used in Task 3. 
+%
+
+
+%% Other Things to Try
+% 
+% Experiment with other blocks in the Arduino block library. For example:
+%
+% * Use *Digital Input* block to adjust the motor shaft position depending
+% on the external control signal or signals. 
+% * Use *Standard Servo Read* block to read the motor shaft position and
+% compare it with the desired position.
+% 
+%
+
+
+%% Summary
+% 
+% This example showed you how to use Target for Use with Arduino Uno Hardware
+% to control a standard servo motor. In this example you learned that:
+%
+% * Standard Servo Write block allows you to set the servo motor shaft
+% position, usually in the range from 0 to 180 degrees.
+% * Analog Input block measures the voltage applied to an Arduino analog
+% input pin. Variety of sensors can be attached to analog pins.
+
+close_system('arduinouno_servocontrol_sweep', 0); 
+displayEndOfDemoMessage(mfilename) 
+ % LocalWords:  realtime arduinodemos gettingstarted Uno arduinounodemos GND
+
+##### SOURCE END #####
+--></body></html>

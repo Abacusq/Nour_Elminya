@@ -1,0 +1,20 @@
+;Artificial Intelligence Script
+
+;Header
+
+desc          = pickup weapon with prompt
+
+;Triggers
+
+:state=0:hudreset,hudx=50,hudy=50,hudimagefine=gamecore\huds\341\tips\takeweap1.png,hudname=takeprompt1,hudhide=1,hudmake=display
+
+:state=10,inview=1,plrfacing=30,plrdistwithin=50:etimerstart,state=11
+:state=11:hudshow=takeprompt1,hudfadeout=takeprompt1
+:state=11,plrusingaction=1:state=1,playertake,coloff,rundecal=-1,plrsound=audiobank\items\pickupweapon.wav
+:state=11,etimergreater=500,plrnotfacing=40:state=10
+:state=11,etimergreater=500,inview=0:state=10
+:state=11,etimergreater=500,plrdistfurther=60:state=10
+
+:state=0:state=10
+
+;End of Script

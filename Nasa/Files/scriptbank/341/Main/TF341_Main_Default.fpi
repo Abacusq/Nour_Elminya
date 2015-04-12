@@ -1,0 +1,75 @@
+;//TF-341 Artificial Intelligence Script
+;//Script by Errant AI, Requires FPSC x9 v1.18 Beta 6 or later and character with TF341 animations.
+
+desc          = DarkAI TF341 default AI for enemy or non-recruitable ally - Assign to Main AI slot must be used with a Shoot AI script
+
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//generic cooldown clock
+:state=0:dimlocalvar=cooldown
+:varless=cooldown 0:setvar=cooldown 2000
+:vargreater=cooldown 0:subvar=cooldown 1
+
+;//Walking animations
+:isdarkai=1,ducking=0,strafingleft=1:animationnormal,animate=49,resethead
+:isdarkai=1,ducking=0,strafingright=1:animationnormal,animate=49,resethead
+:isdarkai=1,ducking=0,movingforwards=1:animationnormal,animate=49
+:isdarkai=1,ducking=0,runningforwards=1:animationnormal,animate=40,resethead
+:isdarkai=1,ducking=0,movingbackwards=1:animationreverse,animate=49,resethead
+:isdarkai=1,ducking=0,idle=1:animationnormal,animate=48
+;//Crouching Animations
+:isdarkai=1,ducking=1,strafingleft=1:animationnormal,animate=34,resethead
+:isdarkai=1,ducking=1,strafingright=1:animationnormal,animate=34,resethead
+:isdarkai=1,ducking=1,movingforwards=1:animationnormal,animate=34,resethead
+:isdarkai=1,ducking=1,movingbackwards=1:animationreverse,animate=34,resethead
+:isdarkai=1,ducking=1,idle=1:animationnormal,animate=33,resethead
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Team Behavior
+;//Look around occasionally
+:varequal=cooldown 2000,random=50:rotateheadrandom=50
+;//Auto follow if player stays relatively close
+:state=1,aiteam=1,plrdistwithin=200,plrdistfurther=100,aihastarget=0,aicanshoot=0:aifollowplr=1,state=2
+:state=1,aiteam=1,plrdistfurther=500:aifollowplr=0,state=2
+:aiteam=1,plrdistwithin=100:aifollowplr=0
+;//2ndary Characters can move around occasionally
+:aiteam=4,varequal=cooldown 1000,idle=1,random=500:aimoverandom
+:aiteam=5,varequal=cooldown 1000,idle=1,random=500:aimoverandom
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Shot Damage - Flinch (random)  left / right / gut - go to shoot script
+::headshot=1,headshotdamage=275
+:shotdamage=1,varequal=beenshot 0:setvar=beenshot 1
+:varequal=beenshot 1,varequal=patrol 1:bloodspurt=1,setvar=beenshot 5
+:varequal=beenshot 1,varequal=patrol 0,random=2:aistop,setaiactive=0,setframe=45,setvar=beenshot 2,sound=audiobank\eai\melee_i_soft.wav
+:varequal=beenshot 2:incframe=45,freeze
+:varequal=beenshot 2,framebeyond=45 80:setvar=setanim 1,setaiactive=1,setvar=beenshot 5
+:varequal=beenshot 1,varequal=patrol 0,random=1:aistop,setaiactive=0,setframe=46,setvar=beenshot 3,sound=audiobank\eai\melee_i_soft.wav
+:varequal=beenshot 3:incframe=46,freeze
+:varequal=beenshot 3,framebeyond=46 80:setvar=setanim 1,setaiactive=1,setvar=beenshot 5
+:varequal=beenshot 1,varequal=patrol 0:aistop,setaiactive=0,setframe=44,setvar=beenshot 4,sound=audiobank\voices\male\land.wav
+:varequal=beenshot 4:incframe=44,freeze
+:varequal=beenshot 4,framebeyond=44 80:setvar=setanim 1,setaiactive=1,setvar=beenshot 5
+:varequal=beenshot 5:setvar=beenshot 0,animate=34,state=999
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Watch for enemy
+:always:airotatetotarget
+;//Listen for enemy
+:state=1,aicanshoot=0,aiheardsound=500:aimovetosound
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Assist team if called while in standby mode (RoE permitting)
+:isdarkai=1,aicalled=2000,aihastarget=0,idle=1:airespondtocall
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Go to shoot script
+:state=1,aicanshoot=1:aisettarget,state=999
+:state=30,aicanshoot=1:state=999
+:state=999:aistop,setvar=beenshot 99,state=1000
+:state=1000:aistop,setaiactive=0,setframe=24,state=1001
+:state=1001:incframe=24,freeze
+:state=1001,frameatend=24:setaiactive=1,aistop,state=1002
+:state=1002:etimerstart,aicallteam=5000,state=2,setvar=beenshot 0,resethead,shootplr
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Open Doors
+:nearactivatable=0:settarget,activatetarget=2
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Start Script
+:state=0:setaiactive=1,alwaysactive=1,reloadweapon,aiattackawareness=1,state=2
+:state=2:state=1,etimerstart
+;//End

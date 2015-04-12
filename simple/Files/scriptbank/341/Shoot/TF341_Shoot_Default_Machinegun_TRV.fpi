@@ -1,0 +1,91 @@
+;//TF-341 Artificial Intelligence Script
+;//Script by Errant AI, Requires FPSC x9 v1.18 Beta 6 or later and TF341 TRV Bot character
+
+desc          = DarkAI TF341 shoot default full-auto gun (LMG) - Assign to Shoot AI slot must be used with matching TRV Main AI script
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Dark AI TRV Bot Animations
+::aiusefullaim=1
+::aisetspeed=70
+:aiaction=1:resethead
+:aicanshoot=0,random=20:rotateheadrandom=140,sound=audiobank\341\trvservo.wav
+:idle=0:sound=audiobank\341\trvhum.wav
+:state=0:dimlocalvar=checkmove,setvar=checkmove 1
+:state=0:dimlocalvar=botmoving,setvar=botmoving 0
+:state=0:dimlocalvar=botanim,setvar=botanim 0
+:varequal=checkmove 1,idle=1,varnotequal=botmoving 0:setvar=botmoving 0,setvar=checkmove 0,setvar=botanim 0
+:varequal=checkmove 1,idle=1,varequal=botmoving 0:setvar=checkmove 0
+:varequal=checkmove 1,strafingleft=1,varnotequal=botmoving 3:setvar=botmoving 3,setvar=checkmove 0,setvar=botanim 0
+:varequal=checkmove 1,strafingleft=1,varequal=botmoving 3:setvar=checkmove 0
+:varequal=checkmove 1,strafingright=1,varnotequal=botmoving 2:setvar=botmoving 2,setvar=checkmove 0,setvar=botanim 0
+:varequal=checkmove 1,strafingright=1,varequal=botmoving 2:setvar=checkmove 0
+:varequal=checkmove 1,idle=0,strafingleft=0,strafingright=0,varnotequal=botmoving 1:setvar=botmoving 1,setvar=checkmove 0,setvar=botanim 0
+:varequal=checkmove 1,idle=0,strafingleft=0,strafingright=0,varequal=botmoving 1:setvar=checkmove 0
+;//idle
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 0,varequal=botanim 0:setvar=botanim 1
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 0,varequal=botanim 1:setframe=7,setvar=botanim 2
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 0,varequal=botanim 2:incframe=7
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 0,varequal=botanim 2,frameatend=7:setvar=checkmove 1,setframe=7
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 0,idle=0:setvar=checkmove 1,setframe=7
+;//moving
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 1,varequal=botanim 0:setvar=botanim 1
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 1,varequal=botanim 1:setframe=5,setvar=botanim 2
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 1,varequal=botanim 2:incframe=5
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 1,varequal=botanim 2,frameatend=5:setvar=checkmove 1,setframe=5
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 1,idle=1:setvar=checkmove 1,setframe=7
+;//strafe right
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 2,varequal=botanim 0:setvar=botanim 1
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 2,varequal=botanim 1:setframe=4,setvar=botanim 2
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 2,varequal=botanim 2:incframe=4
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 2,varequal=botanim 2,frameatend=4:setvar=checkmove 1,setframe=2
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 2,idle=1:setvar=checkmove 1,setframe=7
+;//strafe left
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 3,varequal=botanim 0:setvar=botanim1
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 3,varequal=botanim 1:setframe=3,setvar=botanim 2
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 3,varequal=botanim 2:incframe=3
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 3,varequal=botanim 2,frameatend=3:setvar=checkmove 1,setframe=3
+:isdarkai=1,varequal=checkmove 0,varequal=botmoving 3,idle=1:setvar=checkmove 1,setframe=7
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//TARGETING and SHOOTING FULL-AUTO
+:state=1,aihastarget=0:aisettarget
+:state=1:airotatetotarget
+:ifweapon=1,aicanshoot=1,random=5:useweapon,rundecal=6
+:state=1,aicanshoot=1,aitargetdistfurther=201:aistop,freeze
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Respond to any sounds while not in combat
+:state=1,aiheardsound=1000:aimovetosound
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Assist allies if called while inactive
+:isdarkai=1,aicalled=2000,aihastarget=0,idle=1:airespondtocall
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Fall back to cover
+:state=1,aitargetdistwithin=60,aicanshoot=1,random=20:state=60
+:state=60:airotatetotarget,etimerstart,aimovetocover=0,state=61,setvar=SEAY $EAY,addvar=SEAY 180,setvar=checkmove 1
+:state=61:aisettarget
+:state=61:rotatetotarget
+:state=61:setvar=SEAY $EAY,airotatey=%SEAY
+:state=61,aiatcover=1:setvar=botmoving 999,state=2
+:state=61,aicanshoot=1,aitargetdistfurther=201:aistop,state=2
+:state=61,etimergreater=3000:state=2
+;//Get super defensive when low health to avoid DAI taking over and turning AI's back to hostiles
+:state=1,isdarkai=1,healthless=250,idle=0,random=10:state=60
+:state=1,isdarkai=1,healthless=250,idle=0,random=3:aistop
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Shot Damage
+:shotdamage=1,healthless=300,random=20:state=60
+:shotdamage=1:bloodspurt=2
+:shotdamagetype=1:bloodspurt=2
+:healthless=100,random=200:bloodspurt=2
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Stand down after inaction delay
+:state=1,idle=1,aicanshoot=0,etimergreater=8000:state=999,etimerstart,aicleartarget,runfpidefault=1
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Open Doors
+:nearactivatable=0:settarget,activatetarget=2
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Headshot
+::headshot=1,headshotdamage=100
+;------------------------------------------------------------------------------------------------------------------------------------------------------
+;//Start Script
+:state=0:setaiactive=1,alwaysactive=1,aiattackawareness=1,state=2,setvar=checkmove 1
+:state=2:state=1,etimerstart,reloadweapon,setvar=checkmove 1
+;//End

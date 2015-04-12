@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--Copyright 2012 The MathWorks, Inc. -->
+<!--Real-Time Toolbox Support Package Repository -->
+<RTTPackageRepository>
+    <SupportPackage 
+        name="Arduino Uno" 
+        version="1.0" 
+        platform="PCWIN,PCWIN64"
+        url="http://www.mathworks.com" 
+        downloadurl="http://sharepoint/dev/spc/verdeploy/senthilteam/HardwareInterface/Documents/Research"
+        licenseurl="http://www.mathworks.com/matlabcentral/fileexchange/view_license?file_info_id=32374"
+        folder="arduinouno" 
+        firmwareupdate=""
+        demoxml="arduinounodemos/demos.xml">
+    </SupportPackage>
+    <Path name="$(INSTALLDIR)/arduinouno"></Path>
+    <Path name="$(INSTALLDIR)/arduinouno/arduinounodemos"></Path>
+    <FilesToPackage>
+       <File name="src/rtiostream_serial.cpp"></File>
+    </FilesToPackage>  
+</RTTPackageRepository>
